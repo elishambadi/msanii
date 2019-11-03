@@ -80,10 +80,13 @@
         <h6>Implement search photographer function</h6>
         <button class="btn btn-primary">Find Photographer</button><br><br><br>
 
+        <a class="btn btn-primary" href="login.php">Login</a><br><br>
+        <br>
         <p>Sign up as:</p>
         <a class="btn btn-primary" onclick="" href="signUP.php?type=photographers">Photographer</a><br><br>
         <a class="btn btn-primary" href="signUP.php?type=model">Model</a><br><br>
         <a class="btn btn-primary" href="signUP.php?type=owner">Location Owner</a><br><br>
+
         </form>
       </div>
     </div>

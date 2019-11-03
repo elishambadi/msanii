@@ -1,3 +1,10 @@
+<?php 
+  session_start();
+  if (!isset($_SESSION["username"])) {
+    $_SESSION["logged"] = FALSE;
+    header('Location: login.php');
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -99,7 +106,8 @@
         <div class="col-md-4">
           <form action="uploadPhotoBE.php" method="POST" enctype="multipart/form-data">
             <label>Photographer: </label>
-            <input type="text" name="pName"><br>
+            <input type="text" name="pName" value=
+            <?php if (isset($_SESSION["username"])) { echo $_SESSION["username"];} ?>><br>
             <label>Model: </label>
             <input type="text" name="mName"><br>
             <label>Location: </label>

@@ -1,4 +1,10 @@
-<?php session_start(); ?>
+<?php 
+  session_start();
+  if (!isset($_SESSION["username"])) {
+    $_SESSION["logged"] = FALSE;
+    header('Location: login.php');
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
 

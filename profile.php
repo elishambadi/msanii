@@ -26,6 +26,9 @@
   <!-- Fontawesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+  <!-- Pop up form CSS -->
+  <link rel="stylesheet" type="text/css" href="popup.css">
+
   <style type="text/css">
     .row {
       display: flex;
@@ -42,7 +45,10 @@
     .column img {
       margin-top: 8px;
       vertical-align: middle;
-    } 
+    }
+    .col-md-4{
+      padding: 10px;
+    }
 /*    #sidebar-wrapper{
       position: fixed;
     }*/
@@ -131,7 +137,7 @@
         <h4 style="text-align: center">Welcome <?php echo $_SESSION["username"];?></h4>
         <!-- Div to hold user stats and other details -->
         <div class="row">
-          <div class="column">
+          <div class="col-md-4">
             <img
             <?php 
               require 'connect.php';
@@ -151,7 +157,30 @@
              width="200px" height="200px" style="border-radius: 50%"><br>
              <!-- Display DP close -->
 
+          </div>
+
+          <!-- Display profile info -->
+          <div class="col-md-8" style="text-align: left; vertical-align: middle; padding-top: 20px;">
             <h5><?php echo $_SESSION["username"];?></h5>
+            <!-- Creating a popup -->
+            <div class="form-popup" id="myForm" onclick="myFunction()">
+              <form action="editBio.php" class="form-container" method="post">
+                <label for="bio">Enter Bio: </label>
+                <input type="text" name="bio" placeholder="Enter bio..."><br>
+                <button type="submit" class="btn-success">Done!</button>
+                <button type="submit" class="btn-danger" onclick="closeForm()">Close</button>
+              </form>
+            </div>
+
+            <script type="text/javascript">
+              function openForm(){
+                document.getElementById("myForm").style.display="block";
+              }
+              function closeForm(){
+                document.getElementById("myForm").style.display="none";
+              }
+            </script>
+
             <?php
             require 'connect.php';
             //Define username and table
@@ -170,24 +199,25 @@
                 };
                 //Display photographer ID closed
 
-                $sql = "SELECT verified FROM photographers WHERE (photographer_id = '$photographer_id')";
+                $sql = "SELECT verified, bio FROM photographers WHERE (photographer_id = '$photographer_id')";
                 $result = $conn -> query($sql);
                 if ($result -> num_rows > 0) {
                   while ($row = $result -> fetch_assoc()) {
                     if ($row["verified"] == 'YES') {
                       echo "Verified ";
-                      echo "<i class = \"fa fa-check-circle \" style= \"font-size: 20px\"></i>";
+                      echo "<i class = \"fa fa-check-circle \" style= \"font-size: 20px\"></i><br>";
                     }
                     else{
-                      echo "Not verified";
+                      echo "Not verified<br>";
                     }
+                      echo "Bio:".$row["bio"].".<br> <button class=\"btn btn-info\" onclick=\"openForm()\">Edit bio</button>";
                   }
                 }
               }
 
               if ($table == "model") {
                 //Display model ID
-                $sql = "SELECT model_id FROM model WHERE (username = '$username')";
+                $sql = "SELECT model_id, bio FROM model WHERE (username = '$username')";
                 $result = $conn -> query($sql);
 
                 if ($result -> num_rows > 0) {
@@ -215,6 +245,8 @@
             ?>
           </div>
         </div>
+        <!-- End of profile info -->
+
         <!-- Display images -->
         <?php 
           require("connect.php");
@@ -224,26 +256,26 @@
 
           if ($table == "photographers") {
             //Get photographer_ID
-                $sql = "SELECT photographer_id FROM photographers WHERE (username = '$username')";
-                $result = $conn -> query($sql);
+            $sql = "SELECT photographer_id FROM photographers WHERE (username = '$username')";
+            $result = $conn -> query($sql);
 
-                if ($result -> num_rows > 0) {
-                  while ($row = $result -> fetch_assoc()) {
-                    $photographer_id = $row["photographer_id"];
-                  }
-                };
-                //Display model ID closed
+            if ($result -> num_rows > 0) {
+              while ($row = $result -> fetch_assoc()) {
+                $photographer_id = $row["photographer_id"];
+              }
+            };
+            //Display model ID closed
 
-              $sql = "SELECT image_name, caption, location_id, image_id FROM images WHERE (photographer_id = 
-              '$photographer_id')";
-              $result = $conn -> query($sql);
-              if ($result -> num_rows > 0) {
+            $sql = "SELECT image_name, caption, location_id, image_id FROM images WHERE (photographer_id = 
+            '$photographer_id')";
+            $result = $conn -> query($sql);
+            if ($result -> num_rows > 0) {
 
-              echo "<div class = \"row\"><div class=\"column\">";
+              echo "<div class = \"row\"><div class=\"col-md-4\">";
               $counter = 0; //Counter to display divs
               while ($row = $result -> fetch_assoc()) {
                 $counter++;
-                echo "<img src = uploads/".$row["image_name"]." width=\"400px\" height =\"250px\">";
+                echo "<img src = uploads/".$row["image_name"]." width=\"300px\" height =\"250px\">";
                 echo "<a style=\"margin-left: 30px\" class=\"btn btn-primary\" href = \"delete.php?id=".$row["image_id"]."\">Delete</a><br>";
                 echo $row["caption"];
 
@@ -256,35 +288,30 @@
                     echo "@"."<a href=\"location.php?id=".$row["location_id"]."\">".$row["location_name"]."</a><br>";
                   }
                 }
-
-                //Counter to open new row div
-                if ($counter == 3) {
-                  echo "</div> <div class = \"column\">";
-                  $counter = 0;
+                  echo "</div><div class = \"col-md-4";
                 }
-              }
-              echo "</div>";
+                echo "</div>";//Closing row div
             }
           }
 
           if ($table == "model") {
           //Get photographer_ID
-                $sql = "SELECT model_id FROM model WHERE (username = '$username')";
-                $result = $conn -> query($sql);
+            $sql = "SELECT model_id FROM model WHERE (username = '$username')";
+            $result = $conn -> query($sql);
 
-                if ($result -> num_rows > 0) {
-                  while ($row = $result -> fetch_assoc()) {
-                    $model_id = $row["model_id"];
-                  }
-                };
-                //Display model ID closed
+            if ($result -> num_rows > 0) {
+              while ($row = $result -> fetch_assoc()) {
+                $model_id = $row["model_id"];
+              }
+            };
+            //Display model ID closed
 
-              $sql = "SELECT image_name, caption, location_id, image_id FROM images WHERE (model_id = 
-              '$model_id')";
-              $result = $conn -> query($sql);
-              if ($result -> num_rows > 0) {
+            $sql = "SELECT image_name, caption, location_id, image_id FROM images WHERE (model_id = 
+            '$model_id')";
+            $result = $conn -> query($sql);
+            if ($result -> num_rows > 0) {
 
-              echo "<div>";
+              echo "<div class = \"row\">";
               $counter = 0; //Counter to display divs
               while ($row = $result -> fetch_assoc()) {
                 $counter++;
@@ -300,12 +327,6 @@
                   while ($row = $result1 -> fetch_assoc()) {
                     echo "@"."<a href=\"location.php?id=".$row["location_id"]."\">".$row["location_name"]."</a><br>";
                   }
-                }
-
-                //Counter to open new row div
-                if ($counter == 2) {
-                  echo "</div> <div>";
-                  $counter = 0;
                 }
               }
             }

@@ -1,7 +1,8 @@
-<?php
+<?php 
   session_start();
-  if ($_SESSION["logged"] == FALSE) {
-    echo "<script type=\"text/javascript\"> alert(\"Please log in first!\");></script>";
+  if (!isset($_SESSION["username"])) {
+    $_SESSION["logged"] = FALSE;
+    header('Location: ../login.php');
   }
 ?>
 <!DOCTYPE html>
@@ -14,16 +15,35 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Msanii - Photographer</title>
+  <title>Msanii - After Book</title>
 
   <!-- Bootstrap core CSS -->
-  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Custom styles for this template -->
-  <link href="css/simple-sidebar.css" rel="stylesheet">
+  <link href="../css/simple-sidebar.css" rel="stylesheet">
 
   <!-- Fontawesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <style type="text/css">
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 0 4px;
+    }
+
+    /* Create two equal columns that sits next to each other */
+    .column {
+      flex: 50%;
+      padding: 0 4px;
+    }
+
+    .column img {
+      margin-top: 8px;
+      vertical-align: middle;
+    } 
+  </style>
 
 </head>
 
@@ -81,25 +101,29 @@
       </nav>
 
       <div class="container-fluid" style="text-align: center">
-        <h1 class="mt-4">Log In</h1>
-        <form action="loginBE.php" method="POST">
-          <label>Username: </label>
-          <input type="text" name="username" class="form-group" placeholder="Username or email"><br>
-          <label>Password: </label>
-          <input type="password" name="password" class="form-group" placeholder="password"><br>
-          <label>Log In as: </label>
-          <select name="userType" class="form-group">
-            <option value="photographers">Photographer</option>
-            <option value="model">Model</option>
-            <option value="owner">Owner</option>
-          </select>
-          <br>
-          <input type="submit" name="submit" value="LOGIN" class="btn btn-success"><br><br>
-          <a href="signUP.php" class="btn btn-primary">Not a member?</a>
-        </form>
+        <h4 style="text-align: center;"></h4>
+        <div class="row" style="margin-top: 20px">
+          <div class="col-md-6">
+            <h3>Display buttons</h3>
+            <?php 
+              require '../connect.php';
+              $username = $_SESSION["username"];
+              $userType = $_SESSION["userType"];
+
+              // Start photographer dashboard
+              //Get photographer_id
+              if ($userType == "photographers") {
+                $sql="SELECT booking_date, start_time, end_time FROM bookings WHERE '$photographer_i'";
+              }
+             ?>
+          </div>
+          <div class="col-md-6">
+            <h3>Display content</h3>
+            <!-- Side to display content -->
+          </div>
+          </div>
       </div>
-    </div>
-    <!-- /#page-content-wrapper -->
+      <!-- /#page-content-wrapper -->
 
   </div>
   <!-- /#wrapper -->
@@ -115,6 +139,20 @@
       $("#wrapper").toggleClass("toggled");
     });
   </script>
+
+  <!-- <script type='text/javascript'>
+    function preview_image(event) 
+    {
+     var reader = new FileReader();
+     reader.onload = function()
+     {
+      var output = document.getElementById('outputImage');
+      output.src = reader.result;
+     }
+     reader.readAsDataURL(event.target.files[0]);
+    }
+    </script> -->
+
 
 </body>
 
