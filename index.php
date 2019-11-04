@@ -31,11 +31,11 @@
         <i class="fa fa-camera-retro" style="font-size: 32px"></i>&nbsp;Msanii
       </div>
       <div class="list-group list-group-flush">
-        <a href="profile.php" class="list-group-item list-group-item-action bg-light">Profile</a>
+        <!-- <a href="profile.php" class="list-group-item list-group-item-action bg-light">Profile</a>
         <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
         <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
-        <a href="booking.php" class="list-group-item list-group-item-action bg-light">Bookings</a>
-        <a href="uploadPhoto.php" class="list-group-item list-group-item-action bg-light">Upload photo</a>
+        <a href="#" class="list-group-item list-group-item-action bg-light">Bookings</a>
+        <a href="#" class="list-group-item list-group-item-action bg-light">Upload photo</a> -->
       </div>
     </div>
     <!-- /#sidebar-wrapper -->
@@ -62,13 +62,13 @@
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Search
               </a>
-              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Models</a>
-                <a class="dropdown-item" href="#">Photographers</a>
-                <a class="dropdown-item" href="#">Locations</a>
+              <!-- <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="search.php">Models</a>
+                <a class="dropdown-item" href="search.php">Photographers</a>
+                <a class="dropdown-item" href="search.php">Locations</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#">Logout</a>
-              </div>
+              </div> -->
             </li>
           </ul>
         </div>
@@ -78,12 +78,12 @@
         <h1 class="mt-4">Welcome to Msanii</h1>
         <p>Where photographers come to express themselves!</p>
         <h6>Implement search photographer function</h6>
-        <button class="btn btn-primary">Find Photographer</button><br><br><br>
+        <a href="search.php?client=1" class="btn btn-primary">Find Photographer</a><br><br><br>
 
         <a class="btn btn-primary" href="login.php">Login</a><br><br>
         <br>
         <p>Sign up as:</p>
-        <a class="btn btn-primary" onclick="" href="signUP.php?type=photographers">Photographer</a><br><br>
+        <a class="btn btn-primary" href="signUP.php?type=photographers">Photographer</a><br><br>
         <a class="btn btn-primary" href="signUP.php?type=model">Model</a><br><br>
         <a class="btn btn-primary" href="signUP.php?type=owner">Location Owner</a><br><br>
 

@@ -1,4 +1,6 @@
 <?php 
+	session_start();
+
 	require 'connect.php';
 	$photographer = $_POST["photographer"];
 	$model = $_POST["model"];
@@ -7,6 +9,7 @@
 	$end_time = $_POST["endTime"];
 	$booking_date = $_POST["bookingDate"];
 	$description = $_POST["description"];
+	$client_name = $_SESSION["username"];
 
 	//Get photographer name
 	$sql = "SELECT photographer_id FROM photographers WHERE (username = '$photographer')";
@@ -39,8 +42,8 @@
 	}
 
 	//Finally insert into Database
-	$sql = "INSERT INTO bookings(booking_date, start_time, end_time, location_id, photographer_id, model_id, description)
-	VALUES ('$booking_date', '$start_time', '$end_time', '$location_id', '$photographer_id', '$model_id', '$description')";
+	$sql = "INSERT INTO bookings(booking_date, start_time, end_time, client_name, location_id, photographer_id, model_id, description)
+	VALUES ('$booking_date', '$start_time', '$end_time', '$client_name', '$location_id', '$photographer_id', '$model_id', '$description')";
 
 	if ($conn -> query($sql) === TRUE) {
 		echo "Booking Successful";

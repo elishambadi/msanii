@@ -89,11 +89,11 @@
                 Search
               </a>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Models</a>
-                <a class="dropdown-item" href="#">Photographers</a>
-                <a class="dropdown-item" href="#">Locations</a>
+                <a class="dropdown-item" href="search.php">Models</a>
+                <a class="dropdown-item" href="search.php">Photographers</a>
+                <a class="dropdown-item" href="search.php">Locations</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Logout</a>
+                <a class="dropdown-item" href="logout.php">Logout</a>
               </div>
             </li>
           </ul>

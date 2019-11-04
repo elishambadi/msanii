@@ -1,9 +1,9 @@
 <?php 
-  session_start();
-  if (!isset($_SESSION["username"])) {
-    $_SESSION["logged"] = FALSE;
-    header('Location: login.php');
-  }
+  // session_start();
+  // if (!isset($_SESSION["username"])) {
+  //   $_SESSION["logged"] = FALSE;
+  //   header('Location: login.php');
+  // }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +15,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Msanii - Profile</title>
+  <title>Msanii - Search</title>
 
   <!-- Bootstrap core CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -147,11 +147,15 @@
     <!-- /#page-content-wrapper -->
     <?php 
       require 'connect.php';
-      if (isset($_POST["username"]) || isset($_POST["userType"])) {
-        $username = $_POST["search_name"];
-        $table = $_POST["userType"];
-        echo "<h4 style=\"text-align: center\">".strtoupper($table)."</h4>";
-
+      //if (isset($_POST["username"]) || isset($_POST["userType"])) {
+        if (isset($_POST["search_name"])) {
+          $username = $_POST["search_name"];
+        }
+        if (isset($_POST["userType"])) {
+          $table = $_POST["userType"];
+          echo "<h4 style=\"text-align: center\">".strtoupper($table)."</h4>";
+        }       
+        
         if ($table = "location") {
           $sql = "SELECT * FROM location WHERE (location_name = '$username')";
           $result = $conn -> query($sql);
@@ -174,8 +178,8 @@
           }
         }
 
-        if ($table == "photographers") {
-        $sql = "SELECT * FROM photographers WHERE (username = '$username')";
+        if ($table === "photographers") {
+        $sql = "SELECT * FROM photographers WHERE username = '$username'";
           $result = $conn -> query($sql);
           if ($result -> num_rows > 0) {
             echo "<table>";
@@ -194,6 +198,9 @@
               echo "</tr>";
             };
             echo "</table>";
+          }
+          else{
+            echo "No result.";
           }
         }
 
@@ -215,7 +222,7 @@
             echo "</table>";
           }
         }
-      }
+        //}
      ?>
 
   </div>

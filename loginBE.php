@@ -3,7 +3,7 @@
 	require 'connect.php';
 
 	$username = $_POST["username"]; //Could be a username or an email
-	$password = md5($_POST["password"]);
+	$password = $_POST["password"];
 	$userType = $_POST["userType"];
 
 	if ($userType == "photographers") {
