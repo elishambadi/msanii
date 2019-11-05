@@ -35,7 +35,17 @@
     .column img {
       margin-top: 8px;
       vertical-align: middle;
-    } 
+    }
+    #locImg{
+      width: 500px;
+      height: 400px;
+      margin: 10px;
+    }
+    #profileImg{
+      width : 200px;
+      height: 200px;
+      border-radius: 50%;
+    }
   </style>
 
 </head>
@@ -94,14 +104,43 @@
       </nav>
 
       <div class="container-fluid" style="text-align: center">
-        <h1 class="mt-4">Welcome to Msanii</h1>
-        <p>Where photographers come to express themselves!</p>
-        <button class="btn btn-primary">Find Photographer</button><br><br><br>
+        <?php 
+          require 'connect.php';
 
-        <p>Sign up as:</p>
-        <a class="btn btn-primary" href="html/photographer.php"><button>Photographer</button></a><br><br>
-        <a class="btn btn-primary" href="html/model.php"><button>Model</button></a><br><br>
-        <a class="btn btn-primary" href="html/location.php"><button>Location Owner</button></a><br><br>
+          $photographer_id = $_GET["id"];
+          $sql = "SELECT * FROM photographers WHERE (photographer_id = '$photographer_id')";
+          $result = $conn -> query($sql);
+          if ($result -> num_rows > 0) {
+          while ($row = $result -> fetch_assoc()) {
+            $photographer_name = $row["username"];
+
+            //Display profile image
+            $sql = "SELECT image_name FROM profileimages WHERE username='".$row["username"]."'";
+            $result1 = $conn -> query($sql);
+            if($result1 -> num_rows > 0){
+              while ($row2 = $result1 -> fetch_assoc()) {
+                echo "<img id=\"profileImg\" src=\"profilePics/".$row2["image_name"]."\">";
+              }
+            }
+              //End display profile image
+              echo "<h3>".$photographer_name."</h3>";
+              echo "<h4>".$row["expertise"]."</h4>";
+              echo "<h4>".$row["bio"]."</h4>";
+              echo "<h4>".$row["email"]."</h4>";
+              echo "<h4><a class=\"btn btn-primary\" href=\"booking.php?photoID=".$row["photographer_id"]."\">Book Now</a></h4>";
+            
+
+            }
+          }
+
+          $sql = "SELECT * FROM images WHERE (photographer_id = '$photographer_id')";
+          $result = $conn -> query($sql);
+          if ($result -> num_rows > 0) {
+            while ($row = $result -> fetch_assoc()) {
+              echo "<img src = \"uploads/".$row["image_name"]."\" id=\"locImg\">";
+            }
+          }
+         ?>
       </div>
     </div>
     <!-- /#page-content-wrapper -->

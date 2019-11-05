@@ -1,9 +1,12 @@
 <?php 
-  // session_start();
-  // if (!isset($_SESSION["username"])) {
-  //   $_SESSION["logged"] = FALSE;
-  //   header('Location: login.php');
-  // }
+  session_start();
+  if ($_GET["client"] = 1) {
+    $_SESSION["username"] = "client";
+  }
+  if (!isset($_SESSION["username"])) {
+    $_SESSION["logged"] = FALSE;
+    header('Location: login.php');
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -48,7 +51,7 @@
     }*/
     table{
       /*border: 1px solid black;*/
-      width: 100%;
+      width: 90%;
       margin: 0px 50px 0px 50px;
     }
     th{
@@ -134,7 +137,13 @@
 
       <div class="container-fluid" style="text-align: center">
         <br>
-        <form action="search.php" method="POST">
+        <form action="search.php" method="POST" enctype="multipart/form">
+          <label>Search by:</label>
+          <select name="searchType">
+            <option value="username">Username</option>
+            <option value="expertise">Expertise</option>
+          </select>&nbsp;&nbsp;
+          <label for="userType">User type: </label>
           <select name="userType">
             <option value="photographers">Photographers</option>
             <option value="model">Models</option>
@@ -151,12 +160,16 @@
         if (isset($_POST["search_name"])) {
           $username = $_POST["search_name"];
         }
+        if (isset($_POST["searchType"])) {
+          $searchType = $_POST["searchType"];
+        }
         if (isset($_POST["userType"])) {
           $table = $_POST["userType"];
           echo "<h4 style=\"text-align: center\">".strtoupper($table)."</h4>";
         }       
         
-        if ($table = "location") {
+        //Start of location section
+        if (isset($table) && $table == "location") {
           $sql = "SELECT * FROM location WHERE (location_name = '$username')";
           $result = $conn -> query($sql);
 
@@ -165,21 +178,27 @@
             echo "<tr>";
             echo "<th>Location</th>";
             echo "<th>City</th>";
-            echo "<th>Email</th>";
             echo "</tr>";
             while ($row = $result -> fetch_assoc()) {
               echo "<tr>";
-              echo "<th>".$row["location_name"]."</th>";
+              echo "<th><a href=\"location.php?id=".$row["location_id"]."\">".$row["location_name"]."</th>";
               echo "<th>".$row["city"]."</th>";
-              echo "<th>".$row["email"]."</th>";
               echo "</tr>";
             }
             echo "<table>";
           }
+          else{
+            echo "<h5 style=\"text-align:center;\">No result</h5>";
+          }
         }
-
-        if ($table === "photographers") {
-        $sql = "SELECT * FROM photographers WHERE username = '$username'";
+        //Start of photographer section
+        elseif (isset($table) && $table == "photographers") {
+          if ($searchType = "username") {
+            $sql = "SELECT * FROM photographers WHERE username = '$username'";
+          }
+          elseif ($searchType = "expertise") {
+            $sql = "SELECT * FROM photographers WHERE expertise = '$username'";
+          }
           $result = $conn -> query($sql);
           if ($result -> num_rows > 0) {
             echo "<table>";
@@ -190,7 +209,7 @@
             echo "</tr>";
             while ($row = $result -> fetch_assoc()) {
               echo "<tr>";
-              echo "<td> <a href= \"".$table.".php?username=".$username."&&userType=".$table."\">".$row["username"]."</a></td>";
+              echo "<td> <a href= \"".$table.".php?id=".$row["photographer_id"]."&&userType=".$table."\">".$row["username"]."</a></td>";
               echo "<td>".$row["email"]."</td>";
               if ($table == "photographers") {
                 echo "<td>".$row["expertise"]."</td>";
@@ -200,11 +219,11 @@
             echo "</table>";
           }
           else{
-            echo "No result.";
+            echo "<h5 style=\"text-align:center;\">No result</h5>";
           }
         }
-
-        if ($table == "model") {
+        //Start of model section
+        elseif (isset($table) && $table == "model") {
         $sql = "SELECT * FROM model WHERE (username = '$username')";
           $result = $conn -> query($sql);
           if ($result -> num_rows > 0) {
@@ -217,6 +236,30 @@
               echo "<tr>";
               echo "<td> <a href= \"".$table.".php?username=".$username."&&userType=".$table."\">".$row["username"]."</a></td>";
               echo "<td>".$row["email"]."</td>";
+              echo "</tr>";
+            };
+            echo "</table>";
+          }
+          else{
+            echo "<h5 style=\"text-align:center;\">No result</h5>";
+          }
+        }
+        else{
+          echo "<h4 style=\"text-align:center;\">Photographers</h4>";
+          $sql = "SELECT * FROM photographers";
+          $result = $conn -> query($sql);
+          if ($result -> num_rows > 0) {
+            echo "<table>";
+            echo "<tr>";
+            echo "<th>Username</th>";
+            echo "<th>Email</th>";
+            echo "<th>Expertise</th>";
+            echo "</tr>";
+            while ($row = $result -> fetch_assoc()) {
+              echo "<tr>";
+              echo "<td> <a href= \"photographers.php?id=".$row["photographer_id"]."&&userType=photographers\">".$row["username"]."</a></td>";
+              echo "<td>".$row["email"]."</td>";
+              echo "<td>".$row["expertise"]."</td>";
               echo "</tr>";
             };
             echo "</table>";

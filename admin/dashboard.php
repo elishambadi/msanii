@@ -108,8 +108,13 @@
             <?php 
               require '../connect.php';
               $username = $_SESSION["username"];
-              $userType = $_SESSION["userType"];
-
+              if (isset($_SESSION["userType"])) {
+                $userType = $_SESSION["userType"];
+              }
+              else{
+                $userType = "";
+              }
+              
               //Photographer Dashboard start
               //Get photographer_id
               $sql = "SELECT photographer_id FROM photographers WHERE (username = '$username')";
@@ -215,6 +220,7 @@
               //End model dashboard
 
               //Locations Dashboard start
+              if ($userType == "owner") {
               //Start Get owner_id
               $sql = "SELECT owner_id FROM owner WHERE (username = '$username')";
               $result = $conn -> query($sql);
@@ -236,7 +242,7 @@
                 }
               };
               //Get owner ID closed
-              if ($userType == "owner") {
+              
                 $sql="SELECT * FROM bookings WHERE location_id = '$location_id'";
 
                 $result = $conn -> query($sql);
@@ -276,6 +282,74 @@
                 }
               }
               //End locations dashboard
+
+              //Normal clients dashboard
+              if (isset($_SESSION["client_email"])) {
+                $client_email = $_SESSION["client_email"];
+                $sql="SELECT * FROM bookings WHERE client_name = '$client_email'";
+
+                $result = $conn -> query($sql);
+                if ($result -> num_rows > 0) {  
+                  echo "<table>";
+                  echo "<tr>";
+                  echo "<th>id</th>";
+                  echo "<th>Client</th>";
+                  echo "<th>Date</th>";
+                  echo "<th>Description</th>";
+                  echo "<th>Location</th>"; //Display status
+                  echo "<th>Photographer</th>"; //Display view button
+                  echo "<th>Model</th>"; //Display view button
+                  echo "</tr>";
+                  $counter = 1;
+                  while ($row = $result -> fetch_assoc()) {
+                    echo "<tr>";
+                    echo "<td>".$counter."</td>";
+                    echo "<td>".$row["client_name"]."</td>";
+                    echo "<td>".$row["booking_date"]."</td>";
+                    echo "<td>".$row["description"]."</td>";
+                    //Display location approvals
+                    if ($row["location_approve"] == "") {
+                      echo "<td><a class=\"btn btn-warning\">Pending</a></td>";
+                    }
+                    elseif ($row["location_approve"] == "YES") {
+                      echo "<td><a class=\"btn btn-success\">Approved</a></td>";
+                    }
+                    elseif (($row["location_approve"] == "NO")) {
+                      echo "<td><a class=\"btn btn-danger\">Disapproved</a></td>";
+                    }
+                    //End display location approvals
+
+                    //Display photographer approvals
+                    if ($row["photographer_approve"] == "") {
+                      echo "<td><a class=\"btn btn-warning\">Pending</a></td>";
+                    }
+                    elseif ($row["photographer_approve"] == "YES") {
+                      echo "<td><a class=\"btn btn-success\">Approved</a></td>";
+                    }
+                    elseif (($row["photographer_approve"] == "NO")) {
+                      echo "<td><a class=\"btn btn-danger\">Disapproved</a></td>";
+                    }
+                    //End display photographer approvals
+
+                    //Display photographer approvals
+                    if ($row["model_approve"] == "") {
+                      echo "<td><a class=\"btn btn-warning\">Pending</a></td>";
+                    }
+                    elseif ($row["model_approve"] == "YES") {
+                      echo "<td><a class=\"btn btn-success\">Approved</a></td>";
+                    }
+                    elseif (($row["model_approve"] == "NO")) {
+                      echo "<td><a class=\"btn btn-danger\">Disapproved</a></td>";
+                    }
+                    //End display photographer approvals
+
+                    echo "</tr>";
+                    $counter++;
+                  }
+                  echo "</table>";
+                }
+              }
+              //End of normal clients dashboard
              ?>
           </div>
           </div>

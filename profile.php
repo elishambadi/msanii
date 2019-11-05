@@ -4,6 +4,9 @@
     $_SESSION["logged"] = FALSE;
     header('Location: login.php');
   }
+  elseif($_SESSION["userType"] = "client"){
+    header('Location: index.php');
+  }
   ?>
 <!DOCTYPE html>
 <html lang="en">

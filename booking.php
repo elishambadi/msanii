@@ -113,24 +113,42 @@
         <?php if (!isset($_GET["id"])): ?>
         <h4 style="text-align: center;">New Booking</h4>
         <div class="row" style="margin-top: 20px">
-        <div class="col-md-4">
-          <button onclick="window.location.href = 'viewBookings.php'" class="btn btn-info">View All Bookings</button><br><br>
+        <div class="col-md-8">
+          <button onclick="window.location.href = 'admin/dashboard.php'" class="btn btn-info">View All Bookings</button><br><br>
 
           <form action="newBook.php" method="POST" enctype="multipart/form-data">
             <label>Booking Location: </label>
-            <input type="text" name="location"><br>
+            <input type="text" name="location" class="form-group"><br>
             <label>Models: </label>
-            <input type="text" name="model"><br>
+            <input type="text" name="model" class="form-group"><br>
             <label>Photographers: </label>
-            <input type="text" name="photographer"><br>
+            <input type="text" name="photographer" class="form-group" value=
+            <?php 
+              if (isset($_GET["photoID"])) {
+                require 'connect.php';
+                $photoID = $_GET["photoID"];
+                $sql = "SELECT username FROM photographers WHERE photographer_id = '$photoID'";
+                $result = $conn -> query($sql);
+                if ($result -> num_rows > 0) {
+                  while ($row = $result -> fetch_assoc()) {
+                    echo "\"".$row["username"]."\"";
+                  }
+                }
+              }
+             ?>
+            ><br>
             <label>Dates: </label>
-            <input type="date" name="bookingDate"><br>
+            <input type="date" name="bookingDate" class="form-group"><br>
             <label>Start Time: </label>
-            <input type="Time" name="startTime"><br>
+            <input type="Time" name="startTime" class="form-group"><br>
             <label>End Time: </label>
-            <input type="Time" name="endTime"><br>
+            <input type="Time" name="endTime" class="form-group"><br>
             <label>Description: </label>
-            <input type="text" name="description" height="10"><br>
+            <input type="text" name="description"  class="form-group"><br>
+
+            <!-- Client email for the form -->
+            <label>Enter contact email: </label>
+            <input type="email" name="client_email" height="10"  class="form-group" required="required"><br>
             <input type="submit" name="submit" value="SUBMIT BOOKING">
 
           </form>

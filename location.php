@@ -36,6 +36,11 @@
       margin-top: 8px;
       vertical-align: middle;
     } 
+    #locImg{
+      width: 500px;
+      height: 400px;
+      margin: 10px;
+    }
   </style>
 
 </head>
@@ -121,13 +126,23 @@
             $location_name = $row["location_name"];
             echo "<h3>".$location_name."</h3>";
             echo "<h4>".$row["description"]."</h4>";
+            //Display owner email
+            $sql="SELECT email FROM owner WHERE owner_id=".$row["owner_id"];
+            $result = $conn -> query($sql);
+            if ($result -> num_rows > 0) {
+              while ($row = $result -> fetch_assoc()) {
+                echo "<h4>Email:".$row["email"]."</h4>";
+              }
+            }
+            echo "<h4><a class=\"btn btn-primary\" href=\"booking.php?locID=".$row["location_id"]."\">Book Now</a></h4>";
+
           }
 
           $sql = "SELECT * FROM images WHERE (location_id = '$location_id')";
           $result = $conn -> query($sql);
           if ($result -> num_rows > 0) {
             while ($row = $result -> fetch_assoc()) {
-              echo "<img src = \"uploads/\"".$row["image_name"].">";
+              echo "<img src = \"uploads/".$row["image_name"]."\" id=\"locImg\">";
             }
           }
          ?>

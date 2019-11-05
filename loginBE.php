@@ -3,7 +3,7 @@
 	require 'connect.php';
 
 	$username = $_POST["username"]; //Could be a username or an email
-	$password = $_POST["password"];
+	$password = md5($_POST["password"]);
 	$userType = $_POST["userType"];
 
 	if ($userType == "photographers") {
@@ -19,7 +19,7 @@
 					echo "Login successful";
 					$_SESSION["username"] = $row["username"];
 					$_SESSION["userType"] = "photographers";
-					header('Location: profile.php');
+					header('Location: admin/dashboard.php');
 					$_SESSION["logged"] == TRUE;
 				}
 			}
