@@ -1,3 +1,6 @@
+<?php 
+  session_start();
+ ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,11 +34,12 @@
         <i class="fa fa-camera-retro" style="font-size: 32px"></i>&nbsp;Msanii
       </div>
       <div class="list-group list-group-flush">
-        <!-- <a href="profile.php" class="list-group-item list-group-item-action bg-light">Profile</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
+        <?php if (isset($_SESSION["username"])) : ?>
+        <a href="profile.php" class="list-group-item list-group-item-action bg-light">Profile</a>
+        <a href="admin/dashboard.php" class="list-group-item list-group-item-action bg-light">Overview</a>
         <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
         <a href="#" class="list-group-item list-group-item-action bg-light">Bookings</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Upload photo</a> -->
+        <?php endif; ?>
       </div>
     </div>
     <!-- /#sidebar-wrapper -->
@@ -56,19 +60,16 @@
               <a class="nav-link" href="profile.php">Home<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Support</a>
+              <a class="nav-link" href="search.php">Search</a>
             </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Search
-              </a>
-              <!-- <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="search.php">Models</a>
-                <a class="dropdown-item" href="search.php">Photographers</a>
-                <a class="dropdown-item" href="search.php">Locations</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Logout</a>
-              </div> -->
+            <li class="nav-item">
+                <?php if (isset($_SESSION["username"])) {
+                  echo "<a class=\"nav-link\" style=\"color: red;\" href=\"logout.php\">Logout</a>";
+                }
+                else{
+                  echo "<a class=\"nav-link\" style=\"color: green;\" href=\"login.php\">Login</a>";
+                } ?>
+              
             </li>
           </ul>
         </div>

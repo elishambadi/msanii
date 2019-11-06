@@ -99,22 +99,6 @@
       </nav>
 
       <div class="container-fluid" style="text-align: center">
-        <!-- <div class="row">
-          <div class="column">
-            <img src="#" width="100%">
-            <img src="#" width="100%">
-            <img src="#" width="100%">
-            <img src="#" width="100%">
-            <img src="#" width="100%">
-          </div>
-          <div class="column">
-            <img src="#" width="100%">
-            <img src="#" width="100%">
-            <img src="#" width="100%">
-            <img src="#" width="100%">
-            <img src="#" width="100%">
-          </div>
-        </div> -->
 
         <?php 
           require 'connect.php';
@@ -126,12 +110,13 @@
             $location_name = $row["location_name"];
             echo "<h3>".$location_name."</h3>";
             echo "<h4>".$row["description"]."</h4>";
+
             //Display owner email
             $sql="SELECT email FROM owner WHERE owner_id=".$row["owner_id"];
-            $result = $conn -> query($sql);
-            if ($result -> num_rows > 0) {
-              while ($row = $result -> fetch_assoc()) {
-                echo "<h4>Email:".$row["email"]."</h4>";
+            $result1 = $conn -> query($sql);
+            if ($result1 -> num_rows > 0) {
+              while ($row1 = $result1 -> fetch_assoc()) {
+                echo "<h4>Email:".$row1["email"]."</h4>";
               }
             }
             echo "<h4><a class=\"btn btn-primary\" href=\"booking.php?locID=".$row["location_id"]."\">Book Now</a></h4>";

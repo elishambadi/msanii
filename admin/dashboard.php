@@ -15,7 +15,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Msanii - After Book</title>
+  <title>Msanii - Dashboard</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -77,24 +77,22 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+            <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
             <li class="nav-item active">
               <a class="nav-link" href="profile.php">Home<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Support</a>
+              <a class="nav-link" href="search.php">Search</a>
             </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Search
-              </a>
-              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="search.php">Models</a>
-                <a class="dropdown-item" href="search.php">Photographers</a>
-                <a class="dropdown-item" href="search.php">Locations</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="logout.php">Logout</a>
-              </div>
+            <li class="nav-item">
+              
+                <?php if (isset($_SESSION["username"])) {
+                  echo "<a class=\"nav-link\" style=\"color: red;\" href=\"../logout.php\">Logout</a>";
+                }
+                else{
+                  echo "<a class=\"nav-link\" style=\"color: green;\" href=\"../login.php\">Login</a>";
+                } ?>
+              
             </li>
           </ul>
         </div>
@@ -112,74 +110,23 @@
                 $userType = $_SESSION["userType"];
               }
               else{
-                $userType = "";
+                $userType = ""; //To preempt a not found error and for client usertype
               }
               
               //Photographer Dashboard start
-              //Get photographer_id
-              $sql = "SELECT photographer_id FROM photographers WHERE (username = '$username')";
-              $result = $conn -> query($sql);
-
-              if ($result -> num_rows > 0) {
-                while ($row = $result -> fetch_assoc()) {
-                  $photographer_id = $row["photographer_id"];
-                }
-              };
-              //Get owner ID closed
               if ($userType == "photographers") {
-                $sql="SELECT booking_date, start_time, end_time, client_name, booking_id, location_approve, description FROM bookings WHERE photographer_id = '$photographer_id'";
-
+                //Get photographer_id
+                $sql = "SELECT photographer_id FROM photographers WHERE (username = '$username')";
                 $result = $conn -> query($sql);
-                if ($result -> num_rows > 0) {  
-                  echo "<table>";
-                  echo "<tr>";
-                  echo "<th>id</th>";
-                  echo "<th>Client username</th>";
-                  echo "<th>Date</th>";
-                  echo "<th>Description</th>";
-                  echo "<th></th>"; //Display status
-                  echo "<th></th>"; //Display view button
-                  echo "</tr>";
-                  $counter = 1;
+
+                if ($result -> num_rows > 0) {
                   while ($row = $result -> fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<td>".$counter."</td>";
-                    echo "<td>".$row["client_name"]."</td>";
-                    echo "<td>".$row["booking_date"]."</td>";
-                    echo "<td>".$row["description"]."</td>";
-                    if ($row["location_approve"] == "") {
-                      echo "<td><a class=\"btn btn-warning\">Pending</a></td>";
-                      echo "<td>"."<a class=\"btn btn-info\" href=\"../booking.php?id=".$row["booking_id"]."\">View</a>"."</td>";
-                    }
-                    elseif ($row["location_approve"] == "YES") {
-                      echo "<td><a class=\"btn btn-success\">Approved</a></td>";
-                      echo "<td>"."<a class=\"btn btn-info\" href=\"../booking.php?approved=true&&id=".$row["booking_id"]."\">View</a>"."</td>";
-                    }
-                    elseif (($row["location_approve"] == "NO")) {
-                      echo "<td><a class=\"btn btn-success\">Disapproved</a></td>";
-                      echo "<td>"."<a class=\"btn btn-danger\" href=\"../booking.php?disapproved=true&&id=".$row["booking_id"]."\">View</a>"."</td>";
-                    }
-                    echo "</tr>";
-                    $counter++;
+                    $photographer_id = $row["photographer_id"];
                   }
-                  echo "</table>";
-                }
-              }
-              //End model dashboard
+                };
+                //Get photographer ID closed
 
-              //Model Dashboard start
-              //Get model_id
-              $sql = "SELECT model_id FROM model WHERE (username = '$username')";
-              $result = $conn -> query($sql);
-
-              if ($result -> num_rows > 0) {
-                while ($row = $result -> fetch_assoc()) {
-                  $model_id = $row["model_id"];
-                }
-              };
-              //Get owner ID closed
-              if ($userType == "model") {
-                $sql="SELECT booking_date, start_time, end_time, client_name, booking_id, location_approve, description FROM bookings WHERE model_id = '$model_id'";
+                $sql="SELECT booking_date, start_time, end_time, client_name, booking_id, photographer_approve, description FROM bookings WHERE photographer_id = '$photographer_id'";
 
                 $result = $conn -> query($sql);
                 if ($result -> num_rows > 0) {  
@@ -199,15 +146,15 @@
                     echo "<td>".$row["client_name"]."</td>";
                     echo "<td>".$row["booking_date"]."</td>";
                     echo "<td>".$row["description"]."</td>";
-                    if ($row["location_approve"] == "") {
+                    if ($row["photographer_approve"] == "") {
                       echo "<td><a class=\"btn btn-warning\">Pending</a></td>";
                       echo "<td>"."<a class=\"btn btn-info\" href=\"../booking.php?id=".$row["booking_id"]."\">View</a>"."</td>";
                     }
-                    elseif ($row["location_approve"] == "YES") {
+                    elseif ($row["photographer_approve"] == "YES") {
                       echo "<td><a class=\"btn btn-success\">Approved</a></td>";
                       echo "<td>"."<a class=\"btn btn-info\" href=\"../booking.php?approved=true&&id=".$row["booking_id"]."\">View</a>"."</td>";
                     }
-                    elseif (($row["location_approve"] == "NO")) {
+                    elseif (($row["photographer_approve"] == "NO")) {
                       echo "<td><a class=\"btn btn-danger\">Disapproved</a></td>";
                       echo "<td>"."<a class=\"btn btn-info\" href=\"../booking.php?disapproved=true&&id=".$row["booking_id"]."\">View</a>"."</td>";
                     }
@@ -215,70 +162,131 @@
                     $counter++;
                   }
                   echo "</table>";
+                }
+                else{
+                 echo "<h3 style=\"margin-top: 100px; color: grey;\">No booking requests so far.<h3>";
+                }
+              }
+              //End photographers dashboard
+
+              //Model Dashboard start
+              if ($userType == "model") {
+                //Get model_id
+                $sql = "SELECT model_id FROM model WHERE (username = '$username')";
+                $result = $conn -> query($sql);
+
+                if ($result -> num_rows > 0) {
+                  while ($row = $result -> fetch_assoc()) {
+                    $model_id = $row["model_id"];
+                  }
+                };
+                //Get owner ID closed
+                $sql="SELECT booking_date, start_time, end_time, client_name, booking_id, model_approve, description FROM bookings WHERE model_id = '$model_id'";
+
+                $result = $conn -> query($sql);
+                if ($result -> num_rows > 0) {  
+                  echo "<table>";
+                  echo "<tr>";
+                  echo "<th>id</th>";
+                  echo "<th>Client username</th>";
+                  echo "<th>Date</th>";
+                  echo "<th>Description</th>";
+                  echo "<th></th>"; //Display status
+                  echo "<th></th>"; //Display view button
+                  echo "</tr>";
+                  $counter = 1;
+                  while ($row = $result -> fetch_assoc()) {
+                    echo "<tr>";
+                    echo "<td>".$counter."</td>";
+                    echo "<td>".$row["client_name"]."</td>";
+                    echo "<td>".$row["booking_date"]."</td>";
+                    echo "<td>".$row["description"]."</td>";
+                    if ($row["model_approve"] == "") {
+                      echo "<td><a class=\"btn btn-warning\">Pending</a></td>";
+                      echo "<td>"."<a class=\"btn btn-info\" href=\"../booking.php?id=".$row["booking_id"]."\">View</a>"."</td>";
+                    }
+                    elseif ($row["model_approve"] == "YES") {
+                      echo "<td><a class=\"btn btn-success\">Approved</a></td>";
+                      echo "<td>"."<a class=\"btn btn-info\" href=\"../booking.php?approved=true&&id=".$row["booking_id"]."\">View</a>"."</td>";
+                    }
+                    elseif (($row["model_approve"] == "NO")) {
+                      echo "<td><a class=\"btn btn-danger\">Disapproved</a></td>";
+                      echo "<td>"."<a class=\"btn btn-info\" href=\"../booking.php?disapproved=true&&id=".$row["booking_id"]."\">View</a>"."</td>";
+                    }
+                    echo "</tr>";
+                    $counter++;
+                  }
+                  echo "</table>";
+                }
+                else
+                {
+                 echo "<h3 style=\"margin-top: 100px; color: grey;\">No booking requests so far.<h3>";
                 }
               }
               //End model dashboard
 
               //Locations Dashboard start
               if ($userType == "owner") {
-              //Start Get owner_id
-              $sql = "SELECT owner_id FROM owner WHERE (username = '$username')";
-              $result = $conn -> query($sql);
-
-              if ($result -> num_rows > 0) {
-                while ($row = $result -> fetch_assoc()) {
-                  $owner_id = $row["owner_id"];
-                }
-              };
-              //Close Get owner_id
-              //Get owner_id
-              $sql = "SELECT location_id FROM location WHERE (owner_id = '$owner_id')";
-              $result = $conn -> query($sql);
-
-              if ($result -> num_rows > 0) {
-                while ($row = $result -> fetch_assoc()) {
-                  $location_id = $row["location_id"];
-                  echo $location_id;
-                }
-              };
-              //Get owner ID closed
-              
-                $sql="SELECT * FROM bookings WHERE location_id = '$location_id'";
-
+                //Start Get owner_id
+                $sql = "SELECT owner_id FROM owner WHERE (username = '$username')";
                 $result = $conn -> query($sql);
-                if ($result -> num_rows > 0) {  
-                  echo "<table>";
-                  echo "<tr>";
-                  echo "<th>id</th>";
-                  echo "<th>Client username</th>";
-                  echo "<th>Date</th>";
-                  echo "<th>Description</th>";
-                  echo "<th></th>"; //Display status
-                  echo "<th></th>"; //Display view button
-                  echo "</tr>";
-                  $counter = 1;
+
+                if ($result -> num_rows > 0) {
                   while ($row = $result -> fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<td>".$counter."</td>";
-                    echo "<td>".$row["client_name"]."</td>";
-                    echo "<td>".$row["booking_date"]."</td>";
-                    echo "<td>".$row["description"]."</td>";
-                    if ($row["location_approve"] == "") {
-                      echo "<td><a class=\"btn btn-warning\">Pending</a></td>";
-                      echo "<td>"."<a class=\"btn btn-info\" href=\"../booking.php?id=".$row["booking_id"]."\">View</a>"."</td>";
-                    }
-                    elseif ($row["location_approve"] == "YES") {
-                      echo "<td><a class=\"btn btn-success\">Approved</a></td>";
-                      echo "<td>"."<a class=\"btn btn-info\" href=\"../booking.php?approved=true&&id=".$row["booking_id"]."\">View</a>"."</td>";
-                    }
-                    elseif (($row["location_approve"] == "NO")) {
-                      echo "<td><a class=\"btn btn-danger\">Disapproved</a></td>";
-                      echo "<td>"."<a class=\"btn btn-info\" href=\"../booking.php?disapproved=true&&id=".$row["booking_id"]."\">View</a>"."</td>";
-                    }
-                    echo "</tr>";
-                    $counter++;
+                    $owner_id = $row["owner_id"];
                   }
-                  echo "</table>";
+                };
+                //Close Get owner_id
+                //Get owner_id
+                $sql = "SELECT location_id FROM location WHERE (owner_id = '$owner_id')";
+                $result = $conn -> query($sql);
+
+                if ($result -> num_rows > 0) {
+                  while ($row = $result -> fetch_assoc()) {
+                    $location_id = $row["location_id"];
+
+                    //Get owner ID closed                
+                    $sql="SELECT * FROM bookings WHERE location_id = '$location_id'";
+
+                    $result1 = $conn -> query($sql);
+                    if ($result1 -> num_rows > 0) {  
+                      echo "<table>";
+                      echo "<tr>";
+                      echo "<th>id</th>";
+                      echo "<th>Client username</th>";
+                      echo "<th>Date</th>";
+                      echo "<th>Description</th>";
+                      echo "<th></th>"; //Display status
+                      echo "<th></th>"; //Display view button
+                      echo "</tr>";
+                      $counter = 1;
+                      while ($row1 = $result1 -> fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>".$counter."</td>";
+                        echo "<td>".$row1["client_name"]."</td>";
+                        echo "<td>".$row1["booking_date"]."</td>";
+                        echo "<td>".$row1["description"]."</td>";
+                        if ($row1["location_approve"] == "") {
+                          echo "<td><a class=\"btn btn-warning\">Pending</a></td>";
+                          echo "<td>"."<a class=\"btn btn-info\" href=\"../booking.php?id=".$row1["booking_id"]."\">View</a>"."</td>";
+                        }
+                        elseif ($row1["location_approve"] == "YES") {
+                          echo "<td><a class=\"btn btn-success\">Approved</a></td>";
+                          echo "<td>"."<a class=\"btn btn-info\" href=\"../booking.php?approved=true&&id=".$row1["booking_id"]."\">View</a>"."</td>";
+                        }
+                        elseif (($row1["location_approve"] == "NO")) {
+                          echo "<td><a class=\"btn btn-danger\">Disapproved</a></td>";
+                          echo "<td>"."<a class=\"btn btn-info\" href=\"../booking.php?disapproved=true&&id=".$row1["booking_id"]."\">View</a>"."</td>";
+                        }
+                        echo "</tr>";
+                        $counter++;
+                      }
+                      echo "</table>";
+                    }
+                    else{
+                      echo "<h3 style=\"margin-top: 100px; color: grey;\">No booking requests so far.<h3>";
+                    }
+                  }
                 }
               }
               //End locations dashboard

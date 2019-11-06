@@ -7,6 +7,7 @@
 	if (isset($_GET["disapproved"])) {
 		$disapprove = "TRUE";
 	}
+	$_SESSION["bookingID"] = $bookingID;
 
 	if ($_SESSION["userType"] == "photographers") {
 		if ($disapprove != "TRUE") {

@@ -22,6 +22,10 @@
 					header('Location: admin/dashboard.php');
 					$_SESSION["logged"] == TRUE;
 				}
+				else{
+					$_SESSION["password"] = "false";
+					header('Location: login.php');
+				}
 			}
 		}
 	}
@@ -41,6 +45,10 @@
 					$_SESSION["userType"] = "model";
 					header('Location: profile.php');
 				}
+				else{
+					$_SESSION["password"] = "false";
+					header('Location: login.php');
+				}
 			}
 		}
 	}
@@ -58,7 +66,12 @@
 					echo "Login successful";
 					$_SESSION["username"] = $row["username"];
 					$_SESSION["userType"] = "owner";
+					echo $_SESSION["userType"];
 					header('Location: profile.php');
+				}
+				else{
+					$_SESSION["password"] = "false";
+					header('Location: login.php');
 				}
 			}
 		}

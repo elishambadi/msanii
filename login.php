@@ -1,7 +1,14 @@
 <?php
   session_start();
-  if ($_SESSION["logged"] == FALSE) {
-    echo "<script type=\"text/javascript\"> alert(\"Please log in first!\");></script>";
+  if (isset($_SESSION["logged"])) {
+    if ($_SESSION["logged"] == FALSE) {
+      echo "<script type=\"text/javascript\"> alert(\"Please log in first!\");></script>";
+    }
+  }
+
+  if (isset($_SESSION["password"])) {
+    echo "<script type=\"text/javascript\"> alert(\"Please check your username or password.\")</script>";
+    unset($_SESSION["password"]);
   }
 ?>
 <!DOCTYPE html>

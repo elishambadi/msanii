@@ -181,8 +181,8 @@
             echo "</tr>";
             while ($row = $result -> fetch_assoc()) {
               echo "<tr>";
-              echo "<th><a href=\"location.php?id=".$row["location_id"]."\">".$row["location_name"]."</th>";
-              echo "<th>".$row["city"]."</th>";
+              echo "<td><a href=\"location.php?id=".$row["location_id"]."\">".$row["location_name"]."</td>";
+              echo "<td>".$row["city"]."</td>";
               echo "</tr>";
             }
             echo "<table>";
@@ -191,6 +191,7 @@
             echo "<h5 style=\"text-align:center;\">No result</h5>";
           }
         }
+        //End of location section
         //Start of photographer section
         elseif (isset($table) && $table == "photographers") {
           if ($searchType = "username") {
@@ -219,9 +220,10 @@
             echo "</table>";
           }
           else{
-            echo "<h5 style=\"text-align:center;\">No result</h5>";
+            echo "<h3 style=\"text-align:center; color: grey; margin-top: 100px;\">No result</h3>";
           }
         }
+        //End of photographer section
         //Start of model section
         elseif (isset($table) && $table == "model") {
         $sql = "SELECT * FROM model WHERE (username = '$username')";
@@ -241,7 +243,7 @@
             echo "</table>";
           }
           else{
-            echo "<h5 style=\"text-align:center;\">No result</h5>";
+            echo "<h3 style=\"text-align:center; color: grey; margin-top: 100px;\">No result</h3>";
           }
         }
         else{

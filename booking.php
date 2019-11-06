@@ -118,7 +118,21 @@
 
           <form action="newBook.php" method="POST" enctype="multipart/form-data">
             <label>Booking Location: </label>
-            <input type="text" name="location" class="form-group"><br>
+            <input type="text" name="location" class="form-group" value=
+            <?php 
+              if (isset($_GET["locID"])) {
+                require 'connect.php';
+                $locID = $_GET["locID"];
+                $sql = "SELECT location_name FROM location WHERE location_id = '$locID'";
+                $result = $conn -> query($sql);
+                if ($result -> num_rows > 0) {
+                  while ($row = $result -> fetch_assoc()) {
+                    echo "\"".$row["location_name"]."\"";
+                  }
+                }
+              }
+             ?>
+            ><br>
             <label>Models: </label>
             <input type="text" name="model" class="form-group"><br>
             <label>Photographers: </label>
@@ -158,6 +172,7 @@
         </div>
       </div>
       <?php else: ?>
+        <!-- Display updates from the dashboard.php page -->
         <h4 style="text-align: center;">Booking Details</h4><br>
         <?php 
           $bookID = $_GET["id"];
@@ -172,7 +187,9 @@
               echo "<tr>"."<th>Date: </th><td>".$row["booking_date"]."</td><tr>";
               echo "<tr>"."<th>Start Time: </th><td>".$row["start_time"]."</td><tr>";
               echo "<tr>"."<th>End Time: </th><td>".$row["end_time"]."</td><tr>";
+              echo "<tr>"."<th>Description: </th><td>".$row["description"]."</td><tr>";
               echo "<tr>"."<th>Location: </th><td>";
+
 
               //Getting location name
               $sql = "SELECT location_name FROM location WHERE location_id = ".$row["location_id"];
@@ -185,7 +202,8 @@
               //Close getting location name
               echo "</td><tr>";
               echo "</table><br>";
-              if (!isset($_GET["approved"])) {
+              if (!isset($_GET["approved"]))
+               {
                 echo "<a class = \"btn btn-success\" href=\"approve.php?id=".$bookID."\">Approve?</a><br><br>";
                 echo "<a class = \"btn btn-danger\" href=\"approve.php?id=".$bookID."&&disapproved=true\">Disapprove?</a><br>";
               }

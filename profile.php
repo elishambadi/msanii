@@ -4,7 +4,7 @@
     $_SESSION["logged"] = FALSE;
     header('Location: login.php');
   }
-  elseif($_SESSION["userType"] = "client"){
+  elseif($_SESSION["userType"] == "client"){
     header('Location: index.php');
   }
   ?>
@@ -71,14 +71,14 @@
       <?php if ($_SESSION["userType"] == "owner"):?>
         <div class="list-group list-group-flush">
         <a href="profile.php" class="list-group-item list-group-item-action bg-light">Profile</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
+        <a href="admin/dashboard.php" class="list-group-item list-group-item-action bg-light">Overview</a>
         <a href="viewLocations.php" class="list-group-item list-group-item-action bg-light">View locations</a>
         <a href="viewBookings.php" class="list-group-item list-group-item-action bg-light">View bookings</a>
       </div>
       <?php else: ?>
       <div class="list-group list-group-flush">
         <a href="profile.php" class="list-group-item list-group-item-action bg-light">Profile</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
+        <a href="admin/dashboard.php" class="list-group-item list-group-item-action bg-light">Overview</a>
         <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
         <a href="booking.php" class="list-group-item list-group-item-action bg-light">Bookings</a>
         <a href="uploadPhoto.php" class="list-group-item list-group-item-action bg-light">Upload photo</a>
@@ -115,19 +115,16 @@
               <a class="nav-link" href="index.php">Home<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Support</a>
+              <a class="nav-link" href="search.php">Search</a>
             </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Search
-              </a>
-              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="search.php?userType=models">Models</a>
-                <a class="dropdown-item" href="search.php?userType=photographers">Photographers</a>
-                <a class="dropdown-item" href="search.php?userType=location">Locations</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="logout.php">Logout</a>
-              </div>
+            <li class="nav-item">
+                <?php if (isset($_SESSION["username"])) {
+                  echo "<a class=\"nav-link\" style=\"color: red;\" href=\"logout.php\">Logout</a>";
+                }
+                else{
+                  echo "<a class=\"nav-link\" style=\"color: green;\" href=\"login.php\">Login</a>";
+                } ?>
+              
             </li>
           </ul>
         </div>
@@ -175,6 +172,7 @@
               </form>
             </div>
 
+            <!-- For photographers to edit Bio -->
             <script type="text/javascript">
               function openForm(){
                 document.getElementById("myForm").style.display="block";
@@ -220,7 +218,7 @@
 
               if ($table == "model") {
                 //Display model ID
-                $sql = "SELECT model_id, bio FROM model WHERE (username = '$username')";
+                $sql = "SELECT model_id FROM model WHERE username = '$username'";
                 $result = $conn -> query($sql);
 
                 if ($result -> num_rows > 0) {
@@ -239,7 +237,8 @@
                       echo "<i class = \"fa fa-check-circle \" style= \"font-size: 20px\"></i>";
                     }
                     else {
-                      echo "Not verified";
+                      echo "Not verified ";
+                      echo "<i class = \"fa fa-times-circle-o\" style= \"font-size: 20px\"></i>";
                     }
                   }
                 }
@@ -253,7 +252,6 @@
         <!-- Display images -->
         <?php 
           require("connect.php");
-          //For testing purposes
           $table = $_SESSION["userType"];
           $username = $_SESSION["username"];
 
@@ -267,7 +265,7 @@
                 $photographer_id = $row["photographer_id"];
               }
             };
-            //Display model ID closed
+            //Display photographer ID closed
 
             $sql = "SELECT image_name, caption, location_id, image_id FROM images WHERE (photographer_id = 
             '$photographer_id')";
@@ -314,11 +312,11 @@
             $result = $conn -> query($sql);
             if ($result -> num_rows > 0) {
 
-              echo "<div class = \"row\">";
+              echo "<div class = \"row\"><div class=\"col-md-4\">";
               $counter = 0; //Counter to display divs
               while ($row = $result -> fetch_assoc()) {
                 $counter++;
-                echo "<img src = uploads/".$row["image_name"]." width=\"400px\" height =\"250px\">";
+                echo "<img src = uploads/".$row["image_name"]." width=\"300px\" height =\"250px\">";
                 echo "<a style=\"margin-left: 30px\" class=\"btn btn-primary\" href = \"delete.php?id=".$row["image_id"]."\">Delete</a><br>";
                 echo $row["caption"];
 
@@ -331,7 +329,9 @@
                     echo "@"."<a href=\"location.php?id=".$row["location_id"]."\">".$row["location_name"]."</a><br>";
                   }
                 }
-              }
+                  echo "</div><div class = \"col-md-4";
+                }
+                echo "</div>";//Closing row div
             }
           }
 
