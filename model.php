@@ -46,6 +46,63 @@
 /*    #sidebar-wrapper{
       position: fixed;
     }*/
+    #locImg{
+      width: 500px;
+      height: 400px;
+      margin: 10px;
+    }
+    #profileImg{
+      width : 200px;
+      height: 200px;
+      border-radius: 50%;
+    }
+    #profile-info{
+      margin-top: 20px;
+      text-align: left;
+    }
+    .hoverImg{
+      position:relative;
+      padding:0;
+      display:block;
+      width: 500px;
+      height: 400px;
+      margin: 10px;
+      cursor:pointer;
+      overflow:hidden;
+    }
+    .content{
+      opacity:0;
+      font-size: 40px;
+      position:absolute;
+      top:0;
+      left:0;
+      color:#1c87c9;
+      background-color:rgba(200,200,200,0.5);
+      width: 500px;
+      height: 400px;
+      margin: 10px;
+      -webkit-transition: all 400ms ease-out;
+      -moz-transition: all 400ms ease-out;
+      -o-transition: all 400ms ease-out;
+      -ms-transition: all 400ms ease-out;
+      transition: all 400ms ease-out;
+      text-align:center;
+    }
+    .hoverImg .content:hover{
+      opacity: 1;
+    }
+    .hoverImg .content .text{
+      height:0;
+      opacity:1;
+      transition-delay: 0s;
+      transition-duration: 0.5s;
+      color: white;
+    }
+    .hoverImg .content:hover .text{
+      opacity:1;
+      transform: translateY(250px);
+      -webkit-transform: translateY(250px);
+    }
   </style>
 
 </head>
@@ -61,8 +118,8 @@
       </div>
       <div class="list-group list-group-flush">
         <a href="profile.php" class="list-group-item list-group-item-action bg-light">Profile</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
+        <a href="admin/dashboard.php" class="list-group-item list-group-item-action bg-light">Overview</a>
+        <a href="events.php" class="list-group-item list-group-item-action bg-light">Events</a>
         <a href="booking.php" class="list-group-item list-group-item-action bg-light">Bookings</a>
         <a href="uploadPhoto.php" class="list-group-item list-group-item-action bg-light">Upload photo</a>
       </div>
@@ -99,135 +156,76 @@
             <li class="nav-item">
               <a class="nav-link" href="#">Support</a>
             </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Search
-              </a>
-              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="search.php?userType=models">Models</a>
-                <a class="dropdown-item" href="search.php?userType=photographers">Photographers</a>
-                <a class="dropdown-item" href="search.php?userType=location">Locations</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="logout.php">Logout</a>
-              </div>
+            <li class="nav-item">
+              <a class="nav-link" href="search.php">Search</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-danger" href="logout.php">Logout</a>
             </li>
           </ul>
         </div>
       </nav>
 
       <div class="container-fluid" style="text-align: center">
-        <!-- Display user session message -->
-        <!--  <h4 style="text-align: center">Welcome ["user"]</h4> -->
-
-        <h4 style="text-align: center">Welcome <?php echo $_SESSION["username"];?></h4>
-        <!-- Div to hold user stats and other details -->
-        <div class="row">
-          <div class="column">
-            <img
-            <?php 
-              require 'connect.php';
-              $username = $_SESSION["username"];
-              $sql = "SELECT image_name FROM profileimages WHERE (username = '$username')";
-              $result = $conn -> query($sql);
-              if ($result -> num_rows > 0) {
-                 while ($row = $result -> fetch_assoc()) {
-                   echo "src = \"profilePics/".$row["image_name"]."\"";
-                 }
-               } 
-             ?>
-             width="100px" height="100px" style="border-radius: 50%"><br>
-            <?//php echo $_SESSION["username"];?> 
-            <h5><?php echo $_GET["username"];?></h5>
-
-            <?php
-              require 'connect.php';
-
-              //Display model ID
-              $username = $_GET["username"];
-              $sql = "SELECT model_id FROM model WHERE (username = '$username')";
-              $result = $conn -> query($sql);
-
-              if ($result -> num_rows > 0) {
-                while ($row = $result -> fetch_assoc()) {
-                  $model_id = $row["model_id"];
-                }
-              };
-              //Display model ID closed
-
-              $sql = "SELECT verified FROM model WHERE (model_id = '$model_id')";
-              $result = $conn -> query($sql);
-              if ($result -> num_rows > 0) {
-                while ($row = $result -> fetch_assoc()) {
-                  if ($row["verified"] == 'YES') {
-                    echo "Verified ";
-                    echo "<i class = \"fa fa-check-circle \" style= \"font-size: 20px\"></i>";
-                  }
-                  else {
-                   
-
-                }
-              }
-            }
-            ?>
-          </div>
-        </div>
         <?php 
-          require("connect.php");
-          //Getting id from session username
-          // $sql = "SELECT photographer_id FROM photographers WHERE ('username' == "$_SESSION['username']")";
-          // $result = $conn -> query($sql);
-          // if ($result -> num_rows == 1) {
-          //   while ($row = $result -> fetch_assoc()) {
-          //     $photographer_id = $row["photographer_id"];
-          //   }
-          // }
-
-          //Ideal statement
-          // $sql = "SELECT image_name, caption FROM images WHERE (photographer_id = '$photographer_id')";
-          //Display model ID
-          $username = $_GET["username"];
-          $sql = "SELECT model_id FROM model WHERE (username = '$username')";
+          require 'connect.php';
+          echo "<div class=\"row\">";
+          echo "<div class=\"col-md-4\">";
+          $model_id = $_GET["id"];
+          $sql = "SELECT * FROM model WHERE (model_id = '$model_id')";
           $result = $conn -> query($sql);
-
           if ($result -> num_rows > 0) {
-            while ($row = $result -> fetch_assoc()) {
-              $model_id = $row["model_id"];
+          while ($row = $result -> fetch_assoc()) {
+            $model_name = $row["username"];
+
+            //Display profile image
+            $sql = "SELECT image_name FROM profileimages WHERE username='".$row["username"]."'";
+            $result1 = $conn -> query($sql);
+            if($result1 -> num_rows > 0){
+              while ($row2 = $result1 -> fetch_assoc()) {
+                echo "<img id=\"profileImg\" src=\"profilePics/".$row2["image_name"]."\">";
+              }
             }
-          };
-          //Display model ID closed
+            else{
+              echo "<img id=\"profileImg\" src=\"assets/avatar.png\">";
+            }
+              //End display profile image
+              echo "<h4>".$model_name."</h4>";
+              echo "</div>";
+              echo "<div class=\"col-md-8\" id=\"profile-info\">";
+              echo "<h5>Email: ".$row["email"]."</h5>";
+              echo "<div class=\"row\"><h5><a class=\"btn btn-primary\" href=\"booking.php?modelID=".$row["model_id"]."\">Book Now</a></h5>&nbsp;&nbsp;";
+              echo "<h5><a class=\"btn btn-primary\" href=\"chat/public/index.php?name=".$row["username"]."\">Chat</a></h5></div>";
+              echo "</div>";
+              echo "</div>";
 
-          //For testing purposes
-          $username = $_GET["username"];
-          $sql = "SELECT image_name, caption, location_id, image_id FROM images WHERE (model_id = '$model_id')";
-          $result = $conn -> query($sql);
-          if ($result -> num_rows > 0) {
-
-            echo "<div>";
-            $counter = 0; //Counter to display divs
-            while ($row = $result -> fetch_assoc()) {
-              $counter++;
-              echo "<img src = uploads/".$row["image_name"]." width=\"400px\" height =\"250px\"><br>";
-              echo $row["caption"];
-
-              //Code to display location name as a hyperlink
-              $location_id = $row["location_id"];
-              $sql = "SELECT location_name, location_id FROM location WHERE (location_id = '$location_id')";
-              $result1 = $conn -> query($sql);
-              if ($result -> num_rows > 0) {
-                while ($row = $result1 -> fetch_assoc()) {
-                  echo "@"."<a href=\"location.php?id=".$row["location_id"]."\">".$row["location_name"]."</a><br>";
-                }
-              }
-
-              //Counter to open new row div
-              if ($counter == 2) {
-                echo "</div> <div>";
-                $counter = 0;
-              }
             }
           }
-
+          echo "<div class=\"row\">";
+          $sql = "SELECT * FROM images WHERE (model_id = '$model_id')";
+          $result = $conn -> query($sql);
+          if ($result -> num_rows > 0) {
+            while ($row = $result -> fetch_assoc()) {
+              echo "<div class=\"hoverImg\">";
+              echo "<img class=\"img-thumbnail\" src = \"uploads/".$row["image_name"]."\" id=\"locImg\">";
+              echo "<div class=\"content\">";
+              echo "<div class=\"text\">@";
+                $sql = "SELECT location_name FROM location WHERE location_id ='".$row["location_id"]."'";
+                $result1 = $conn -> query($sql);
+                if ($result1 -> num_rows > 0) {
+                  while ($row1 = $result1 -> fetch_assoc()) {
+                    echo "<a href=\"location.php?id=".$row["location_id"]."\">".$row1["location_name"]."</a>";
+                  }
+                }
+              echo "</div>";
+              echo "</div>";
+              echo "</div>";
+            }
+          }
+          echo "</div>"
          ?>
+          </div>
+        </div>
       </div>
     </div>
     <!-- /#page-content-wrapper -->

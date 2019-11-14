@@ -81,4 +81,25 @@
       };
     };
 
+    if ($userType == "clients") {
+
+      if (isset($_POST["submit"])) { //Ensures html form validation is done
+        if ($password === $password2) {
+          $sql = "INSERT INTO ".$userType." (first_name, last_name, email, password)
+          VALUES ('$firstName', '$lastName', '$email', '$password')";
+
+          if ($conn -> query($sql) === TRUE) {
+            echo "Successful sign up";
+            header('Location: clients/login.php');
+          }
+          else{
+            echo "Error logging in!".$conn->error;
+          }
+        }
+        else{
+          echo "<script>alert(\"Passwords do not match!\");</script>";
+        };
+      };
+    };
+
 ?>

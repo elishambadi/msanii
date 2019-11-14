@@ -4,7 +4,7 @@
     $_SESSION["logged"] = FALSE;
     header('Location: login.php');
   }
-  elseif($_SESSION["userType"] == "client"){
+  elseif($_SESSION["userType"] == "clients"){
     header('Location: index.php');
   }
   ?>
@@ -25,6 +25,8 @@
 
   <!-- Custom styles for this template -->
   <link href="css/simple-sidebar.css" rel="stylesheet">
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
   <!-- Fontawesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -52,6 +54,9 @@
     .col-md-4{
       padding: 10px;
     }
+    pre{
+      font-family: sans-serif;
+    }
 /*    #sidebar-wrapper{
       position: fixed;
     }*/
@@ -73,13 +78,13 @@
         <a href="profile.php" class="list-group-item list-group-item-action bg-light">Profile</a>
         <a href="admin/dashboard.php" class="list-group-item list-group-item-action bg-light">Overview</a>
         <a href="viewLocations.php" class="list-group-item list-group-item-action bg-light">View locations</a>
-        <a href="viewBookings.php" class="list-group-item list-group-item-action bg-light">View bookings</a>
+        <a href="admin/dashboard.php" class="list-group-item list-group-item-action bg-light">View bookings</a>
       </div>
       <?php else: ?>
       <div class="list-group list-group-flush">
         <a href="profile.php" class="list-group-item list-group-item-action bg-light">Profile</a>
         <a href="admin/dashboard.php" class="list-group-item list-group-item-action bg-light">Overview</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
+        <a href="events.php" class="list-group-item list-group-item-action bg-light">Events</a>
         <a href="booking.php" class="list-group-item list-group-item-action bg-light">Bookings</a>
         <a href="uploadPhoto.php" class="list-group-item list-group-item-action bg-light">Upload photo</a>
       </div>
@@ -162,25 +167,6 @@
           <!-- Display profile info -->
           <div class="col-md-8" style="text-align: left; vertical-align: middle; padding-top: 20px;">
             <h5><?php echo $_SESSION["username"];?></h5>
-            <!-- Creating a popup -->
-            <div class="form-popup" id="myForm" onclick="myFunction()">
-              <form action="editBio.php" class="form-container" method="post">
-                <label for="bio">Enter Bio: </label>
-                <input type="text" name="bio" placeholder="Enter bio..."><br>
-                <button type="submit" class="btn-success">Done!</button>
-                <button type="submit" class="btn-danger" onclick="closeForm()">Close</button>
-              </form>
-            </div>
-
-            <!-- For photographers to edit Bio -->
-            <script type="text/javascript">
-              function openForm(){
-                document.getElementById("myForm").style.display="block";
-              }
-              function closeForm(){
-                document.getElementById("myForm").style.display="none";
-              }
-            </script>
 
             <?php
             require 'connect.php';
@@ -211,10 +197,10 @@
                     else{
                       echo "Not verified<br>";
                     }
-                      echo "Bio:".$row["bio"].".<br> <button class=\"btn btn-info\" onclick=\"openForm()\">Edit bio</button>";
+                    echo "<b>Bio:</b>".$row["bio"]."<br> <button class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#myModal\">Edit bio</button>";
                   }
                 }
-              }
+              };
 
               if ($table == "model") {
                 //Display model ID
@@ -245,7 +231,28 @@
               }
               
             ?>
+            <!-- Edit bio popup -->
+            <div id="myModal" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title">Edit bio</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button> 
+                  </div>
+                  <div class="modal-body">
+                    <form action="editBio.php" method="POST">
+                      <textarea name="bio" placeholder="Enter new bio.." class="form-control"></textarea><br>
+                      <input class="btn btn-success"type="submit" name="submit" value="Done">
+                      <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    </form>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+            <!-- Close edit bio -->
           </div>
+          
         </div>
         <!-- End of profile info -->
 
@@ -276,7 +283,7 @@
               $counter = 0; //Counter to display divs
               while ($row = $result -> fetch_assoc()) {
                 $counter++;
-                echo "<img src = uploads/".$row["image_name"]." width=\"300px\" height =\"250px\">";
+                echo "<img class=\"img-thumbnail\" src = uploads/".$row["image_name"]." width=\"300px\" height =\"250px\" style=\"margin-bottom: 10px\">";
                 echo "<a style=\"margin-left: 30px\" class=\"btn btn-primary\" href = \"delete.php?id=".$row["image_id"]."\">Delete</a><br>";
                 echo $row["caption"];
 

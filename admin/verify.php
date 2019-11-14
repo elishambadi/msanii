@@ -19,6 +19,8 @@
 
 	if ($conn -> query($sql) === TRUE) {
 		echo "Verification successful!";
+		require '../sendEmail.php';
+		
 		$_SESSION["verified"] = TRUE;
 		header('Location: admin.php');
 	}

@@ -42,7 +42,7 @@
     .column img {
       margin-top: 8px;
       vertical-align: middle;
-    } 
+    }
   </style>
 
 </head>
@@ -58,8 +58,8 @@
       </div>
       <div class="list-group list-group-flush">
         <a href="../profile.php" class="list-group-item list-group-item-action bg-light">Profile</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
+        <a href="dashboard.php" class="list-group-item list-group-item-action bg-light">Overview</a>
+        <a href="../events.php" class="list-group-item list-group-item-action bg-light">Events</a>
         <a href="../booking.php" class="list-group-item list-group-item-action bg-light">Bookings</a>
         <a href="../uploadPhoto.php" class="list-group-item list-group-item-action bg-light">Upload photo</a>
       </div>
@@ -130,7 +130,7 @@
 
                 $result = $conn -> query($sql);
                 if ($result -> num_rows > 0) {  
-                  echo "<table>";
+                  echo "<table class=\"table\">";
                   echo "<tr>";
                   echo "<th>id</th>";
                   echo "<th>Client username</th>";
@@ -185,7 +185,7 @@
 
                 $result = $conn -> query($sql);
                 if ($result -> num_rows > 0) {  
-                  echo "<table>";
+                  echo "<table class=\"table\">";
                   echo "<tr>";
                   echo "<th>id</th>";
                   echo "<th>Client username</th>";
@@ -250,7 +250,7 @@
 
                     $result1 = $conn -> query($sql);
                     if ($result1 -> num_rows > 0) {  
-                      echo "<table>";
+                      echo "<table class=\"table\">";
                       echo "<tr>";
                       echo "<th>id</th>";
                       echo "<th>Client username</th>";
@@ -298,7 +298,7 @@
 
                 $result = $conn -> query($sql);
                 if ($result -> num_rows > 0) {  
-                  echo "<table>";
+                  echo "<table class=\"table\">";
                   echo "<tr>";
                   echo "<th>id</th>";
                   echo "<th>Client</th>";

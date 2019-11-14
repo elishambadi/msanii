@@ -58,8 +58,8 @@
       </div>
       <div class="list-group list-group-flush">
         <a href="profile.php" class="list-group-item list-group-item-action bg-light">Profile</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
+        <a href="admin/dashboard.php" class="list-group-item list-group-item-action bg-light">Overview</a>
+        <a href="events.php" class="list-group-item list-group-item-action bg-light">Events</a>
         <a href="booking.php" class="list-group-item list-group-item-action bg-light">Bookings</a>
         <a href="uploadPhoto.php" class="list-group-item list-group-item-action bg-light">Upload photo</a>
       </div>
@@ -84,17 +84,11 @@
             <li class="nav-item">
               <a class="nav-link" href="#">Support</a>
             </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Search
-              </a>
-              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Models</a>
-                <a class="dropdown-item" href="#">Photographers</a>
-                <a class="dropdown-item" href="#">Locations</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Logout</a>
-              </div>
+            <li class="nav-item">
+              <a class="nav-link" href="search.php">Search</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-danger" href="logout.php">Logout</a>
             </li>
           </ul>
         </div>
@@ -103,7 +97,7 @@
       <div class="container-fluid" style="text-align: center">
         <h4 style="text-align: center;">View Locations</h4>
         <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-11">
           <a href="addLocation.php" class="btn btn-info">Add location</a>
           <!-- Display locations in a table format -->
           <?php 
@@ -125,14 +119,15 @@
             $sql = "SELECT * FROM location WHERE (owner_id = '$owner_id')";
             $result = $conn -> query($sql);
             if ($result -> num_rows > 0) {
-              echo "<table>";
+              echo "<table class=\"table\">";
               echo "<tr>";
               echo "<th>ID</th>";
               echo "<th>Image</th>";
               echo "<th>Name</th>";
               echo "<th>City</th>";
               echo "<th>Description</th>";
-              echo "<th>Verified</th>";             
+              echo "<th>Verified</th>";  
+              // echo "<th></th>";           
               echo "</tr>";
               $n = 1; //ID Counter
               while ($row = $result -> fetch_assoc()) {
@@ -143,6 +138,7 @@
                 echo "<td>".$row["city"]."</td>";
                 echo "<td>".$row["description"]."</td>";
                 echo "<td>".$row["verified"]."</td>";
+                // echo "<td><a class=\"btn btn-info add-Photo\" data-id=\"".$row["location_id"]."\" data-target=\"#myModal\" data-toggle=\"modal\">Add image</a></td>";
                 echo "</tr>";
                 $n = $n+1; //Increment to display IDs
               }
@@ -150,8 +146,31 @@
             }
            ?>
         </div>
+        <!-- Edit bio popup -->
+            <div id="myModal" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title">Upload location image</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button> 
+                  </div>
+                  <div class="modal-body">
+                    <form action="addLocationBE.php" method="POST">
+                      <label for="image_upload">Select Image: </label>
+                      <input type="file" name="image_upload" onchange="preview_image(event)" id="image_upload" class="form-control-file" required="required"><br>
+                      <input type="hidden" name="locID" id="locID">
+                      <img id="outputImage" width="400px" height="320px">
+                      <input type="submit" name="submit" value="Upload" class="btn btn-success">&nbsp;&nbsp;&nbsp;
+                      <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    </form>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+            <!-- Close edit bio -->
         <div class="col-md-4">
-          <img id="outputImage" width="600px" height="400px">
+          <img id="outputImage" width="400px" height="320px">
         </div>
       </div>
       </div>
@@ -173,8 +192,13 @@
     });
   </script>
 
-  <!-- <script type='text/javascript'>
-    function preview_image(event) 
+  <script type='text/javascript'>
+    $(document).on("click", ".add-Photo", function(){
+      var locID = $(this).data('id');
+      $(".modal-body #locID").val(locID);
+    });
+
+    function preview_image(event)
     {
      var reader = new FileReader();
      reader.onload = function()
@@ -184,7 +208,7 @@
      }
      reader.readAsDataURL(event.target.files[0]);
     }
-    </script> -->
+    </script>
 
 
 </body>

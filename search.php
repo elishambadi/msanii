@@ -1,8 +1,5 @@
 <?php 
   session_start();
-  if ($_GET["client"] = 1) {
-    $_SESSION["username"] = "client";
-  }
   if (!isset($_SESSION["username"])) {
     $_SESSION["logged"] = FALSE;
     header('Location: login.php');
@@ -49,23 +46,17 @@
 /*    #sidebar-wrapper{
       position: fixed;
     }*/
-    table{
-      /*border: 1px solid black;*/
-      width: 90%;
-      margin: 0px 50px 0px 50px;
+    #locName{
+      font-size: 22px;
+      text-align: center;
+      margin-left: 20px;
     }
-    th{
-      height: 50px;
-      background-color: darkblue;
-      color: white;
+    .carousel-caption{
+      font-size: 15px;
+      font-weight: bolder;
     }
-    td, th{
-      padding: 10px 15px ;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
-    tr:nth-child(even){
-      background-color: #f5f5f5;
+    #hover-img:hover{
+      opacity: 1;
     }
   </style>
 
@@ -82,13 +73,14 @@
       </div>
       <div class="list-group list-group-flush">
         <a href="profile.php" class="list-group-item list-group-item-action bg-light">Profile</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
+        <a href="admin/dashboard.php" class="list-group-item list-group-item-action bg-light">Overview</a>
+        <a href="events.php" class="list-group-item list-group-item-action bg-light">Events</a>
         <a href="booking.php" class="list-group-item list-group-item-action bg-light">Bookings</a>
         <a href="uploadPhoto.php" class="list-group-item list-group-item-action bg-light">Upload photo</a>
       </div>
     </div>
     <!-- /#sidebar-wrapper -->
+
 
     <!-- Page Content -->
     <div id="page-content-wrapper">
@@ -119,39 +111,35 @@
             <li class="nav-item">
               <a class="nav-link" href="#">Support</a>
             </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Search
-              </a>
-              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Models</a>
-                <a class="dropdown-item" href="#">Photographers</a>
-                <a class="dropdown-item" href="#">Locations</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="logout.php">Logout</a>
-              </div>
+            <li class="nav-item">
+              <a class="nav-link" href="search.php">Search</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-danger" href="logout.php">Logout</a>
             </li>
           </ul>
         </div>
       </nav>
 
-      <div class="container-fluid" style="text-align: center">
-        <br>
-        <form action="search.php" method="POST" enctype="multipart/form">
-          <label>Search by:</label>
-          <select name="searchType">
+      <div class="container-fluid" style="text-align: center"><br>
+
+        <form action="search.php" method="POST" enctype="multipart/form" class="form-inline">
+          <label>Search by:&nbsp;&nbsp;</label>
+          <select name="searchType" class="form-control">
             <option value="username">Username</option>
             <option value="expertise">Expertise</option>
-          </select>&nbsp;&nbsp;
-          <label for="userType">User type: </label>
-          <select name="userType">
+          </select>&nbsp;&nbsp;&nbsp;&nbsp;
+          <label for="userType">User type:&nbsp;&nbsp;</label>
+          <select name="userType" class="form-control">
             <option value="photographers">Photographers</option>
             <option value="model">Models</option>
             <option value="location">Locations</option>
-          </select>
-          <input type="text" name="search_name" placeholder="Search item" width="600px" class="form-group">
+          </select>&nbsp;&nbsp;&nbsp;&nbsp;
+          <input type="text" name="search_name" placeholder="Search item" width="600px" class="form-control">
+          &nbsp;&nbsp;&nbsp;&nbsp;
           <button type="submit"><i class="fa fa-search"></i></button>
         </form>
+        <br>
       </div>   
     <!-- /#page-content-wrapper -->
     <?php 
@@ -159,6 +147,7 @@
       //if (isset($_POST["username"]) || isset($_POST["userType"])) {
         if (isset($_POST["search_name"])) {
           $username = $_POST["search_name"];
+          $username1 = str_replace(' ', '', $username); ##For displaying default seearch item is empty
         }
         if (isset($_POST["searchType"])) {
           $searchType = $_POST["searchType"];
@@ -170,39 +159,45 @@
         
         //Start of location section
         if (isset($table) && $table == "location") {
-          $sql = "SELECT * FROM location WHERE (location_name = '$username')";
+          if ($username1 != "") {
+            $sql = "SELECT * FROM location WHERE (location_name = '$username')";
+          }else{
+            $sql = "SELECT * FROM location";
+          }
+          
           $result = $conn -> query($sql);
 
           if ($result -> num_rows > 0) {
-            echo "<table>";
-            echo "<tr>";
-            echo "<th>Location</th>";
-            echo "<th>City</th>";
-            echo "</tr>";
+            echo "<div class=\"row\">";
             while ($row = $result -> fetch_assoc()) {
-              echo "<tr>";
-              echo "<td><a href=\"location.php?id=".$row["location_id"]."\">".$row["location_name"]."</td>";
-              echo "<td>".$row["city"]."</td>";
-              echo "</tr>";
+              echo "<div class=\"col-md-6\">";
+              echo "<a href=\"location.php?id=".$row["location_id"]."\"><img class=\"img-thumbnail img-responsive\" style=\"width:500px; height:360px;\" id=\"hover-img\" src=\"locationImages/".$row["image_name"]."\"></a><br>";
+              echo "<div class=\"carousel-caption\">".$row["location_name"]."</div>";
+              echo "<b id=\"locName\">".$row["location_name"]."</b>";
+              echo "</div>";
             }
-            echo "<table>";
+            echo "</div>";
           }
           else{
             echo "<h5 style=\"text-align:center;\">No result</h5>";
           }
         }
         //End of location section
+
         //Start of photographer section
         elseif (isset($table) && $table == "photographers") {
-          if ($searchType = "username") {
+          if ($searchType == "username" &&  $username1 != "") {
             $sql = "SELECT * FROM photographers WHERE username = '$username'";
           }
-          elseif ($searchType = "expertise") {
+          elseif ($searchType == "expertise" && $username1 != "") {
             $sql = "SELECT * FROM photographers WHERE expertise = '$username'";
+          }elseif ($username1 == "") {
+            $sql = "SELECT * FROM photographers";
           }
+
           $result = $conn -> query($sql);
           if ($result -> num_rows > 0) {
-            echo "<table>";
+            echo "<table  class=\"table\">";
             echo "<tr>";
             echo "<th>Username</th>";
             echo "<th>Email</th>";
@@ -224,19 +219,25 @@
           }
         }
         //End of photographer section
+
         //Start of model section
         elseif (isset($table) && $table == "model") {
-        $sql = "SELECT * FROM model WHERE (username = '$username')";
+          if ($username1 != "") {
+            $sql = "SELECT * FROM model WHERE (username = '$username')";
+          }else{
+            $sql = "SELECT * FROM model";
+          }
+        
           $result = $conn -> query($sql);
           if ($result -> num_rows > 0) {
-            echo "<table>";
+            echo "<table  class=\"table\">";
             echo "<tr>";
             echo "<th>Username</th>";
             echo "<th>Email</th>";
             echo "</tr>";
             while ($row = $result -> fetch_assoc()) {
               echo "<tr>";
-              echo "<td> <a href= \"".$table.".php?username=".$username."&&userType=".$table."\">".$row["username"]."</a></td>";
+              echo "<td> <a href= \"".$table.".php?id=".$row["model_id"]."&&userType=".$table."\">".$row["username"]."</a></td>";
               echo "<td>".$row["email"]."</td>";
               echo "</tr>";
             };
@@ -251,7 +252,7 @@
           $sql = "SELECT * FROM photographers";
           $result = $conn -> query($sql);
           if ($result -> num_rows > 0) {
-            echo "<table>";
+            echo "<table class=\"table\">";
             echo "<tr>";
             echo "<th>Username</th>";
             echo "<th>Email</th>";

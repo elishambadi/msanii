@@ -58,13 +58,14 @@
       </div>
       <div class="list-group list-group-flush">
         <a href="profile.php" class="list-group-item list-group-item-action bg-light">Profile</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
+        <a href="admin/dashboard.php" class="list-group-item list-group-item-action bg-light">Overview</a>
+        <a href="events.php" class="list-group-item list-group-item-action bg-light">Events</a>
         <a href="booking.php" class="list-group-item list-group-item-action bg-light">Bookings</a>
         <a href="uploadPhoto.php" class="list-group-item list-group-item-action bg-light">Upload photo</a>
       </div>
     </div>
     <!-- /#sidebar-wrapper -->
+
 
     <!-- Page Content -->
     <div id="page-content-wrapper">
@@ -84,17 +85,11 @@
             <li class="nav-item">
               <a class="nav-link" href="#">Support</a>
             </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Search
-              </a>
-              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Models</a>
-                <a class="dropdown-item" href="#">Photographers</a>
-                <a class="dropdown-item" href="#">Locations</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="logout.php">Logout</a>
-              </div>
+            <li class="nav-item">
+              <a class="nav-link" href="search.php">Search</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-danger" href="logout.php">Logout</a>
             </li>
           </ul>
         </div>

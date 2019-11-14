@@ -58,13 +58,14 @@
       </div>
       <div class="list-group list-group-flush">
         <a href="profile.php" class="list-group-item list-group-item-action bg-light">Profile</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
+        <a href="admin/dashboard.php" class="list-group-item list-group-item-action bg-light">Overview</a>
+        <a href="events.php" class="list-group-item list-group-item-action bg-light">Events</a>
         <a href="booking.php" class="list-group-item list-group-item-action bg-light">Bookings</a>
         <a href="uploadPhoto.php" class="list-group-item list-group-item-action bg-light">Upload photo</a>
       </div>
     </div>
     <!-- /#sidebar-wrapper -->
+
 
     <!-- Page Content -->
     <div id="page-content-wrapper">
@@ -84,17 +85,11 @@
             <li class="nav-item">
               <a class="nav-link" href="#">Support</a>
             </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Search
-              </a>
-              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Models</a>
-                <a class="dropdown-item" href="#">Photographers</a>
-                <a class="dropdown-item" href="#">Locations</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Logout</a>
-              </div>
+            <li class="nav-item">
+              <a class="nav-link" href="search.php">Search</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-danger" href="logout.php">Logout</a>
             </li>
           </ul>
         </div>
@@ -106,21 +101,21 @@
         <div class="col-md-4">
           <form action="uploadPhotoBE.php" method="POST" enctype="multipart/form-data">
             <label>Photographer: </label>
-            <input type="text" name="pName" value=
+            <input type="text" name="pName" class="form-control" value=
             <?php if (isset($_SESSION["username"])) { echo $_SESSION["username"];} ?>><br>
             <label>Model: </label>
-            <input type="text" name="mName"><br>
+            <input type="text" name="mName" class="form-control"><br>
             <label>Location: </label>
-            <input type="text" name="location"><br>
+            <input type="text" name="location" class="form-control"><br>
             <label for="image_upload">Select Image: </label>
-            <input type="file" name="image_upload" onchange="preview_image(event)" id="image_upload"><br>
+            <input type="file" name="image_upload" onchange="preview_image(event)" id="image_upload" class="form-control-file"><br>
             <label>Caption: </label>
-            <input type="text" name="caption"><br>
-            <input type="submit" name="" value="UPLOAD">
+            <input type="text" name="caption" class="form-control"><br>
+            <input type="submit" name="" value="UPLOAD" class="btn btn-primary">
           </form>
         </div>
         <div class="col-md-4">
-          <img id="outputImage" width="600px" height="400px">
+          <img id="outputImage" width="400px" height="320px">
         </div>
       </div>
       </div>

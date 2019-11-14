@@ -115,7 +115,7 @@ session_start();
         ?>
         
         <div class="row" style="margin-top: 20px">
-          <div class="col-md-8">
+          <div class="col-md-12">
             <?php 
               require '../connect.php';
               //Photographers
@@ -123,7 +123,7 @@ session_start();
                 $sql = "SELECT * FROM photographers";
                 $result = $conn -> query($sql);
                 if ($result -> num_rows > 0) {
-                  echo "<table>";
+                  echo "<table class=\"table\">";
                   echo "<tr>";
                   echo "<th>ID</th>";
                   echo "<th>Username</th>";
@@ -153,7 +153,7 @@ session_start();
                 $sql = "SELECT * FROM model";
                 $result = $conn -> query($sql);
                 if ($result -> num_rows > 0) {
-                  echo "<table>";
+                  echo "<table class=\"table\">";
                   echo "<tr>";
                   echo "<th>ID</th>";
                   echo "<th>Username</th>";
@@ -181,7 +181,7 @@ session_start();
                 $sql = "SELECT * FROM location";
                 $result = $conn -> query($sql);
                 if ($result -> num_rows > 0) {
-                  echo "<table>";
+                  echo "<table class=\"table\">";
                   echo "<tr>";
                   echo "<th>ID</th>";
                   echo "<th>Name</th>";
@@ -209,13 +209,13 @@ session_start();
                 $sql = "SELECT * FROM bookings";
                 $result = $conn -> query($sql);
                 if ($result -> num_rows > 0) {
-                  echo "<table>";
+                  echo "<table class=\"table\">";
                   echo "<tr>";
                   echo "<th>ID</th>";
                   echo "<th>Date</th>";
-                  echo "<th>Start Time</th>";
-                  echo "<th>End Time</th>";
                   echo "<th>photographer</th>";
+                  echo "<th>Start Time</th>";
+                  echo "<th>End Time</th>";    
                   echo "<th>model</th>";
                   echo "<th>location</th>";
                   echo "</tr>";

@@ -37,8 +37,8 @@
         <?php if (isset($_SESSION["username"])) : ?>
         <a href="profile.php" class="list-group-item list-group-item-action bg-light">Profile</a>
         <a href="admin/dashboard.php" class="list-group-item list-group-item-action bg-light">Overview</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Bookings</a>
+        <a href="events.php" class="list-group-item list-group-item-action bg-light">Events</a>
+        <a href="booking.php" class="list-group-item list-group-item-action bg-light">Bookings</a>
         <?php endif; ?>
       </div>
     </div>
@@ -67,7 +67,7 @@
                   echo "<a class=\"nav-link\" style=\"color: red;\" href=\"logout.php\">Logout</a>";
                 }
                 else{
-                  echo "<a class=\"nav-link\" style=\"color: green;\" href=\"login.php\">Login</a>";
+                  echo "<a class=\"nav-link\" style=\"color: green;\" href=\"clients/login.php\">Client Login</a>";
                 } ?>
               
             </li>
@@ -79,7 +79,7 @@
         <h1 class="mt-4">Welcome to Msanii</h1>
         <p>Where photographers come to express themselves!</p>
         <h6>Implement search photographer function</h6>
-        <a href="search.php?client=1" class="btn btn-primary">Find Photographer</a><br><br><br>
+        <a href="signUP.php?type=clients" class="btn btn-primary">Find Photographer</a><br><br><br>
 
         <a class="btn btn-primary" href="login.php">Login</a><br><br>
         <br>

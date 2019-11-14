@@ -32,8 +32,8 @@
       </div>
       <div class="list-group list-group-flush">
         <a href="profile.php" class="list-group-item list-group-item-action bg-light">Profile</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
+        <a href="admin/dashboard.php" class="list-group-item list-group-item-action bg-light">Overview</a>
+        <a href="events.php" class="list-group-item list-group-item-action bg-light">Events</a>
         <a href="booking.php" class="list-group-item list-group-item-action bg-light">Bookings</a>
         <a href="uploadPhoto.php" class="list-group-item list-group-item-action bg-light">Upload photo</a>
       </div>
@@ -58,17 +58,11 @@
             <li class="nav-item">
               <a class="nav-link" href="#">Support</a>
             </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Search
-              </a>
-              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Models</a>
-                <a class="dropdown-item" href="#">Photographers</a>
-                <a class="dropdown-item" href="#">Locations</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Logout</a>
-              </div>
+            <li class="nav-item">
+              <a class="nav-link" href="search.php">Search</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-success" href="#">Login</a>
             </li>
           </ul>
         </div>
@@ -76,31 +70,31 @@
 
       <div class="container-fluid" style="text-align: center">
         <h1 class="mt-4">Sign Up</h1>
-        <form action="signUPBE.php" method="POST">
+        <form action="signUPBE.php" method="POST" class="col-md-4" style="margin-right: auto; margin-left: auto;">
           <label>First Name: </label>
-          <input type="text" name="fName" class="form-group"><br>
+          <input type="text" name="fName" class="form-control"><br>
           <label>Last Name: </label>
-          <input type="text" name="lName" class="form-group"><br>
+          <input type="text" name="lName" class="form-control"><br>
           <?php if (isset($_GET["type"]) && $_GET["type"] == "photographers"): ?>
             <label>Expertise: </label>
-          <input type="text" name="expertise" class="form-group"><br><br>
+          <input type="text" name="expertise" class="form-control"><br><br>
           <?php endif; ?>
           <label>Email: </label>
-          <input type="Email" name="email" class="form-group"><br>
+          <input type="Email" name="email" class="form-control"><br>
           <!-- Display phone number for owners -->
           <?php if (isset($_GET["type"]) && ($_GET["type"] == "owner")):?>
             <label>Phone number:</label>
-            <input type="text" name="pNumber" class="form-group"><br>
+            <input type="text" name="pNumber" class="form-control"><br>
           <?php endif; ?>
           <!-- Hide username for owners -->
           <?php if (isset($_GET["type"]) && ($_GET["type"] == "photographers" || $_GET["type"] == "model")): ?>
           <label>Username: </label>
-          <input type="text" name="username" class="form-group"><br>
+          <input type="text" name="username" class="form-control"><br>
           <?php endif; ?>
           <label>Password: </label>
-          <input type="password" name="password" class="form-group"><br>
+          <input type="password" name="password" class="form-control"><br>
           <label>Confirm password: </label>
-          <input type="password" name="password2" class="form-group"><br>
+          <input type="password" name="password2" class="form-control"><br>
           <input type="hidden" name="userType" value= 
           <?php
             if (isset($_GET["type"])) {
@@ -108,8 +102,12 @@
             }     
           ?>
           ><br>
-          <input type="submit" name="submit" value="Be a Msanii!" class="btn btn-success"><br><br>
+          <input type="submit" name="submit" value="Sign Up!" class="btn btn-success"><br><br>
+          <?php if ($_GET["type"] !== "clients"): ?>
           <a href="login.php" class="btn btn-info">Already signed up?</a>
+          <?php else: ?>
+          <a href="clients/login.php" class="btn btn-info">Already signed up?</a>
+          <?php endif; ?>
         </form>
       </div>
     </div>

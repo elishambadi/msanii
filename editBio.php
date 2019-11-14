@@ -1,20 +1,23 @@
 <?php 
 	session_start();
-  	$username = $_SESSION["username"];
-  	$table = $_SESSION["userType"];
-  	echo $username;
-  	$bio = $_POST["bio"];
-  	echo $bio;
+	$table = $_SESSION["userType"];
+	$bio = $_POST["bio"];
+  echo $bio."<br>";
+  echo $table."<br>";
 
-  	require 'connect.php';
+  $bio = "<pre>".$bio."</pre>";
+
+	require 'connect.php';
 
  	if ($table == "photographers") {
-    	$sql = "UPDATE photographers SET bio = '$bio' WHERE username = '$username'";
+    	$sql = "UPDATE photographers SET bio = '$bio' WHERE username ='".$_SESSION["username"]."'";
     	if ($conn -> query($sql) == TRUE) {
-    		header('Location: profile.php');
+        echo $bio;
+        echo "Successful editing!";
+    		// header('Location: profile.php');
     	}
     	else{
-    		echo "Error changing bio".$conn->error;
+    		echo "Error changing bio ".$conn->error;
     	}
   	}
 ?>

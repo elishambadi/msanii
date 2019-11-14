@@ -68,7 +68,7 @@
       <div class="list-group list-group-flush">
         <a href="profile.php" class="list-group-item list-group-item-action bg-light">Profile</a>
         <a href="admin/dashboard.php" class="list-group-item list-group-item-action bg-light">Overview</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
+        <a href="events.php" class="list-group-item list-group-item-action bg-light">Events</a>
         <a href="booking.php" class="list-group-item list-group-item-action bg-light">Bookings</a>
         <a href="uploadPhoto.php" class="list-group-item list-group-item-action bg-light">Upload photo</a>
       </div>
@@ -93,17 +93,11 @@
             <li class="nav-item">
               <a class="nav-link" href="#">Support</a>
             </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Search
-              </a>
-              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="search.php">Models</a>
-                <a class="dropdown-item" href="search.php">Photographers</a>
-                <a class="dropdown-item" href="search.php">Locations</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="logout.php">Logout</a>
-              </div>
+            <li class="nav-item">
+              <a class="nav-link" href="search.php">Search</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-danger" href="logout.php">Logout</a>
             </li>
           </ul>
         </div>
@@ -111,59 +105,99 @@
 
       <div class="container-fluid" style="text-align: center">
         <?php if (!isset($_GET["id"])): ?>
-        <h4 style="text-align: center;">New Booking</h4>
         <div class="row" style="margin-top: 20px">
-        <div class="col-md-8">
-          <button onclick="window.location.href = 'admin/dashboard.php'" class="btn btn-info">View All Bookings</button><br><br>
+        <div class="col-md-10">
+          <h4 style="text-align: center;">New Booking</h4>
 
           <form action="newBook.php" method="POST" enctype="multipart/form-data">
-            <label>Booking Location: </label>
-            <input type="text" name="location" class="form-group" value=
+            <div class="row">
+            <div class="col-md-6">
+            
             <?php 
-              if (isset($_GET["locID"])) {
+            // Location definition
+              if (!isset ($_SESSION["bookingLocationID"]) && isset($_GET["locID"])) {
+                $_SESSION["bookingLocationID"] = $_GET["locID"];
+              }   
+              if (isset($_SESSION["bookingLocationID"])) {
                 require 'connect.php';
-                $locID = $_GET["locID"];
-                $sql = "SELECT location_name FROM location WHERE location_id = '$locID'";
+                $locID = $_SESSION["bookingLocationID"];
+                $sql = "SELECT location_name, location_id FROM location WHERE location_id = '$locID'";
                 $result = $conn -> query($sql);
                 if ($result -> num_rows > 0) {
                   while ($row = $result -> fetch_assoc()) {
-                    echo "\"".$row["location_name"]."\"";
+                    echo "<input type=\"hidden\" name=\"location\" class=\"form-control\" value=".$row["location_name"].">";
+                    echo "<label>Booking Location: </label> <b>".$row["location_name"]."&nbsp;&nbsp;</b>";
+                    echo "<a href=\"remove.php?locID=".$row["location_id"]."\" class=\"btn btn-info\">Remove</a><br><br>";
                   }
                 }
               }
+              else{
+                echo "<label>Booking Location:&nbsp;&nbsp;</label><a href=\"search.php\" class=\"btn-info btn\">Add Location</a><br><br>";
+              }
              ?>
-            ><br>
-            <label>Models: </label>
-            <input type="text" name="model" class="form-group"><br>
-            <label>Photographers: </label>
-            <input type="text" name="photographer" class="form-group" value=
+
+            <!-- Models definition -->
             <?php 
-              if (isset($_GET["photoID"])) {
+              if (!isset($_SESSION["bookingModelID"]) && isset($_GET["modelID"])) {
+                $_SESSION["bookingModelID"] = $_GET["modelID"];
+              }
+              if (isset($_SESSION["bookingModelID"])) {
                 require 'connect.php';
-                $photoID = $_GET["photoID"];
-                $sql = "SELECT username FROM photographers WHERE photographer_id = '$photoID'";
+                $modelID = $_SESSION["bookingModelID"];
+                $sql = "SELECT username, model_id FROM model WHERE model_id = '$modelID'";
                 $result = $conn -> query($sql);
                 if ($result -> num_rows > 0) {
                   while ($row = $result -> fetch_assoc()) {
-                    echo "\"".$row["username"]."\"";
+                    echo "<input type=\"hidden\" name=\"model\" class=\"form-control\" value=".$row["username"].">";
+                    echo "<label>Model: </label> <b>".$row["username"]."&nbsp;&nbsp;</b>";
+                    echo "<a href=\"remove.php?modelID=".$row["model_id"]."\" class=\"btn btn-info\">Remove</a><br><br>";
                   }
                 }
               }
+              else{
+                echo "<label>Model: &nbsp;&nbsp;</label><a href=\"search.php\" class=\"btn-info btn\">Add Model</a><br><br>";
+              }
              ?>
-            ><br>
-            <label>Dates: </label>
-            <input type="date" name="bookingDate" class="form-group"><br>
+
+            <!-- Photographer definition -->
+            <?php 
+              if (!isset($_SESSION["bookingPhotoID"]) && isset($_GET["photoID"])) {
+                $_SESSION["bookingPhotoID"] = $_GET["photoID"];
+              }
+              if (isset($_SESSION["bookingPhotoID"])) {
+                require 'connect.php';
+                $photographer_id = $_SESSION["bookingPhotoID"];
+                $sql = "SELECT username, photographer_id FROM photographers WHERE photographer_id = '$photographer_id'";
+                $result = $conn -> query($sql);
+                if ($result -> num_rows > 0) {
+                  while ($row = $result -> fetch_assoc()) {
+                    echo "<input type=\"hidden\" name=\"photographer\" class=\"form-control\" value=".$row["username"].">";
+                    echo "<label>Photographer: </label> <b>".$row["username"]."&nbsp;&nbsp;</b>";
+                    echo "<a href=\"remove.php?photoID=".$row["photographer_id"]."\" class=\"btn btn-info\">Remove</a><br><br>";
+                  }
+                }
+              }
+              else{
+                echo "<label>Photographer: &nbsp;&nbsp;</label><a href=\"search.php\" class=\"btn-info btn\">Add Photographer</a><br><br>";
+              }
+             ?>
+            <!-- <label>Dates: </label> -->
+            <input type="date" name="bookingDate"  class="form-control" placeholder="Date of booking"><br>
+            <!-- <label>Description: </label> -->
+            <input type="text" name="description"  class="form-control" placeholder="Description"><br><br>
+            </div>
+            <div class="col-md-6">
             <label>Start Time: </label>
-            <input type="Time" name="startTime" class="form-group"><br>
+            <input type="Time" name="startTime"  class="form-control" placeholder="Start time"><br>
             <label>End Time: </label>
-            <input type="Time" name="endTime" class="form-group"><br>
-            <label>Description: </label>
-            <input type="text" name="description"  class="form-group"><br>
+            <input type="Time" name="endTime"  class="form-control" placeholder="End time"><br>
 
             <!-- Client email for the form -->
-            <label>Enter contact email: </label>
-            <input type="email" name="client_email" height="10"  class="form-group" required="required"><br>
-            <input type="submit" name="submit" value="SUBMIT BOOKING">
+            <!-- <label>Enter contact email: </label> -->
+            <input type="email" name="client_email" height="10" class="form-control" required="required" placeholder="Client email"><br>
+            </div>
+            </div>
+            <input type="submit" class="btn btn-success" name="submit" value="SUBMIT BOOKING">
 
           </form>
         </div>
@@ -180,7 +214,7 @@
           $sql = "SELECT * FROM bookings WHERE booking_id = '$bookID'";
           $result = $conn -> query($sql);
           if ($result -> num_rows > 0) {
-            echo "<table>";
+            echo "<table class=\"table table-hover\">";
             while ($row = $result -> fetch_assoc()) {
               echo "<tr>"."<th>Booking No. </th><td>".$row["booking_id"]."</td><tr>";
               echo "<tr>"."<th>Client username: </th><td>".$row["client_name"]."</td><tr>";

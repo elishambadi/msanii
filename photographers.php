@@ -46,6 +46,53 @@
       height: 200px;
       border-radius: 50%;
     }
+    #profile-info{
+      margin-top: 20px;
+      text-align: left;
+    }
+    .hoverImg{
+      position:relative;
+      padding:0;
+      display:block;
+      width: 500px;
+      height: 400px;
+      margin: 10px;
+      cursor:pointer;
+      overflow:hidden;
+    }
+    .content{
+      opacity:0;
+      font-size: 40px;
+      position:absolute;
+      top:0;
+      left:0;
+      color:#1c87c9;
+      background-color:rgba(200,200,200,0.5);
+      width: 500px;
+      height: 400px;
+      margin: 10px;
+      -webkit-transition: all 400ms ease-out;
+      -moz-transition: all 400ms ease-out;
+      -o-transition: all 400ms ease-out;
+      -ms-transition: all 400ms ease-out;
+      transition: all 400ms ease-out;
+      text-align:center;
+    }
+    .hoverImg .content:hover{
+      opacity: 1;
+    }
+    .hoverImg .content .text{
+      height:0;
+      opacity:1;
+      transition-delay: 0s;
+      transition-duration: 0.5s;
+      color: white;
+    }
+    .hoverImg .content:hover .text{
+      opacity:1;
+      transform: translateY(250px);
+      -webkit-transform: translateY(250px);
+    }
   </style>
 
 </head>
@@ -61,8 +108,8 @@
       </div>
       <div class="list-group list-group-flush">
         <a href="profile.php" class="list-group-item list-group-item-action bg-light">Profile</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
+        <a href="admin/dashboard.php" class="list-group-item list-group-item-action bg-light">Overview</a>
+        <a href="events.php" class="list-group-item list-group-item-action bg-light">Events</a>
         <a href="booking.php" class="list-group-item list-group-item-action bg-light">Bookings</a>
         <a href="uploadPhoto.php" class="list-group-item list-group-item-action bg-light">Upload photo</a>
       </div>
@@ -87,17 +134,11 @@
             <li class="nav-item">
               <a class="nav-link" href="#">Support</a>
             </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Search
-              </a>
-              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Models</a>
-                <a class="dropdown-item" href="#">Photographers</a>
-                <a class="dropdown-item" href="#">Locations</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Logout</a>
-              </div>
+            <li class="nav-item">
+              <a class="nav-link" href="search.php">Search</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-danger" href="logout.php">Logout</a>
             </li>
           </ul>
         </div>
@@ -106,7 +147,8 @@
       <div class="container-fluid" style="text-align: center">
         <?php 
           require 'connect.php';
-
+          echo "<div class=\"row\">";
+          echo "<div class=\"col-md-4\">";
           $photographer_id = $_GET["id"];
           $sql = "SELECT * FROM photographers WHERE (photographer_id = '$photographer_id')";
           $result = $conn -> query($sql);
@@ -123,23 +165,41 @@
               }
             }
               //End display profile image
-              echo "<h3>".$photographer_name."</h3>";
-              echo "<h4>".$row["expertise"]."</h4>";
-              echo "<h4>".$row["bio"]."</h4>";
-              echo "<h4>".$row["email"]."</h4>";
-              echo "<h4><a class=\"btn btn-primary\" href=\"booking.php?photoID=".$row["photographer_id"]."\">Book Now</a></h4>";
-            
+              echo "<h4>".$photographer_name."</h4>";
+              echo "</div>";
+              echo "<div class=\"col-md-8\" id=\"profile-info\">";
+              echo "<h5>Expertise: ".$row["expertise"]."</h5>";
+              echo "<h5>Bio: ".$row["bio"]."</h5>";
+              echo "<h5>Email: ".$row["email"]."</h5>";
+              echo "<div class=\"row\"><h5><a class=\"btn btn-primary\" href=\"booking.php?photoID=".$row["photographer_id"]."\">Book Now</a></h5>&nbsp;&nbsp;";
+              echo "<h5><a class=\"btn btn-primary\" href=\"chat/public/index.php?name=".$row["username"]."\">Chat</a></h5></div>";
+              echo "</div>";
+              echo "</div>";
 
             }
           }
-
+          echo "<div class=\"row\">";
           $sql = "SELECT * FROM images WHERE (photographer_id = '$photographer_id')";
           $result = $conn -> query($sql);
           if ($result -> num_rows > 0) {
             while ($row = $result -> fetch_assoc()) {
-              echo "<img src = \"uploads/".$row["image_name"]."\" id=\"locImg\">";
+              echo "<div class=\"hoverImg\">";
+              echo "<img class=\"img-thumbnail\" src = \"uploads/".$row["image_name"]."\" id=\"locImg\">";
+              echo "<div class=\"content\">";
+              echo "<div class=\"text\">@";
+                $sql = "SELECT location_name FROM location WHERE location_id ='".$row["location_id"]."'";
+                $result1 = $conn -> query($sql);
+                if ($result1 -> num_rows > 0) {
+                  while ($row1 = $result1 -> fetch_assoc()) {
+                    echo "<a href=\"location.php?id=".$row["location_id"]."\">".$row1["location_name"]."</a>";
+                  }
+                }
+              echo "</div>";
+              echo "</div>";
+              echo "</div>";
             }
           }
+          echo "</div>"
          ?>
       </div>
     </div>
