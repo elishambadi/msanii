@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 05, 2019 at 11:48 AM
+-- Generation Time: Nov 15, 2019 at 07:07 AM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.1.32
 
@@ -52,20 +52,21 @@ INSERT INTO `bookings` (`booking_id`, `booking_date`, `start_time`, `end_time`, 
 (1, '2019-11-22', '12:50:00', '15:50:00', 'riengski_', 1, 1, 1, '', 'YES', '', 'YES', ''),
 (2, '2019-10-24', '12:54:00', '18:54:00', 'omiesh105', 1, 1, 1, 'Magazine Photoshoot', '', '', '', ''),
 (3, '2020-09-23', '07:45:00', '11:44:00', 'g_cooker', 1, 1, 1, 'Instagram revamp', 'YES', '', '', ''),
-(5, '2020-10-27', '15:43:00', '20:45:00', 'j_makabala', 4, 5, 1, 'Wedding after party', '', 'YES', '', ''),
+(5, '2020-10-27', '15:43:00', '20:45:00', 'j_makabala', 4, 5, 1, 'Wedding after party', 'YES', 'YES', '', ''),
 (7, '2020-10-02', '12:20:00', '16:40:00', 'riengski_', 4, 5, 1, 'Magazine Photoshoot', '', 'YES', 'YES', ''),
 (8, '2019-10-02', '13:20:00', '17:30:00', 'riengski_', 1, 2, 1, 'Kujibamba', 'NO', 'YES', '', ''),
-(18, '2019-12-05', '09:50:00', '10:50:00', 'client', 4, 4, 1, 'Wedding after party', '', '', '', ''),
-(19, '2019-11-05', '09:51:00', '09:51:00', 'client', 4, 4, 0, 'Magazine Photoshoot', '', '', '', ''),
-(22, '0000-00-00', '00:00:00', '00:00:00', '', 3, 4, 4, '', '', '', '', ''),
+(18, '2019-12-05', '09:50:00', '10:50:00', 'client', 4, 4, 1, 'Wedding after party', 'YES', '', '', ''),
+(19, '2019-11-05', '09:51:00', '09:51:00', 'client', 4, 4, 0, 'Magazine Photoshoot', 'NO', '', '', ''),
 (24, '2019-11-05', '02:55:00', '09:55:00', 'client', 1, 4, 0, 'Instagram revamp', '', '', '', ''),
 (25, '2019-11-05', '10:03:00', '10:03:00', 'client', 1, 4, 0, 'Wedding after party', '', '', '', ''),
-(26, '2019-11-05', '10:16:00', '10:16:00', 'client', 4, 5, 0, 'Instagram revamp', '', '', '', ''),
+(26, '2019-11-05', '10:16:00', '10:16:00', 'client', 4, 5, 0, 'Instagram revamp', '', 'YES', '', ''),
 (27, '2019-11-05', '10:18:00', '10:18:00', 'client', 4, 1, 0, 'Kujibamba', '', '', '', ''),
 (28, '2019-11-05', '10:19:00', '10:19:00', 'client', 1, 5, 0, 'Instagram revamp', '', 'YES', '', ''),
-(29, '2019-11-05', '10:19:00', '10:19:00', 'client', 1, 5, 0, 'Instagram revamp', '', '', '', ''),
+(29, '2019-11-05', '10:19:00', '10:19:00', 'client', 1, 5, 0, 'Instagram revamp', '', 'NO', '', ''),
 (31, '2019-11-05', '10:21:00', '10:21:00', 'y_sobhuza@gmail.com', 1, 5, 4, 'Instagram revamp', '', '', '', ''),
-(32, '2019-11-05', '10:26:00', '10:26:00', 'n_mungai@gmail.com', 1, 5, 4, 'Final clubbing', '', '', '', '');
+(32, '2019-11-05', '10:26:00', '10:26:00', 'n_mungai@gmail.com', 1, 5, 4, 'Final clubbing', '', 'YES', '', ''),
+(33, '2019-08-08', '08:20:00', '08:20:00', 'f_msoups@gmail.com', 4, 1, 4, 'Instagram revamp', '', '', '', ''),
+(34, '2019-11-14', '09:10:00', '09:14:00', 'jmusungu@gmail.com', 1, 2, 4, 'Booking test', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -79,27 +80,17 @@ CREATE TABLE `clients` (
   `last_name` tinytext DEFAULT NULL,
   `email` varchar(40) DEFAULT NULL,
   `password` text DEFAULT NULL,
-  `profile_image` text DEFAULT NULL,
   `verified` tinytext DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `events`
+-- Dumping data for table `clients`
 --
 
-CREATE TABLE `events` (
-  `event_id` int(11) NOT NULL,
-  `event_name` text NOT NULL,
-  `event_date` date NOT NULL,
-  `start_time` time NOT NULL,
-  `end_time` time NOT NULL,
-  `event_location` text NOT NULL,
-  `complete` char(1) NOT NULL,
-  `cancelled` char(1) NOT NULL,
-  `do` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO `clients` (`client_id`, `first_name`, `last_name`, `email`, `password`, `verified`) VALUES
+(1, 'Fredrick', 'Masoups', 'f_msoups@gmail.com', 'ef5bc7023b862cb6afe6c3d57f4b2cb7', NULL),
+(2, 'Janet', 'Musungu', 'jmusungu@gmail.com', 'b2a9bfbc86f7b78be6e8c44270064c4b', NULL),
+(3, 'Janet', 'Musungu', 'jmusungu@gmail.com', 'b2a9bfbc86f7b78be6e8c44270064c4b', NULL);
 
 -- --------------------------------------------------------
 
@@ -124,11 +115,7 @@ CREATE TABLE `images` (
 INSERT INTO `images` (`image_id`, `image_name`, `location_id`, `model_id`, `photographer_id`, `caption`, `date_uploaded`) VALUES
 (7, 'AARH5561.JPG', 1, 1, 1, 'babyshoweress', '2019-10-21 17:39:26'),
 (10, 'IMG_0009.JPG', 1, 1, 1, '', '2019-10-24 09:31:04'),
-(11, 'dp1.jpg', 4, 1, 5, 'Washa!', '2019-10-27 18:04:00'),
-(12, 'MARPIC.jpg', 4, 3, 5, 'Kichwa', '2019-10-27 18:56:59'),
-(13, 'MARPIC.jpg', 5, 4, 5, 'Wowowo', '2019-10-29 13:13:47'),
-(14, 'dp3.jpg', 4, 5, 5, 'Stretcher', '2019-10-29 13:15:04'),
-(15, 'dp1.jpg', 4, 3, 2, 'Fire', '2019-10-31 08:34:43');
+(11, 'dp1.jpg', 4, 1, 5, 'Washa!', '2019-10-27 18:04:00');
 
 -- --------------------------------------------------------
 
@@ -151,10 +138,21 @@ CREATE TABLE `location` (
 --
 
 INSERT INTO `location` (`location_id`, `location_name`, `city`, `description`, `image_name`, `verified`, `owner_id`) VALUES
-(1, 'Home', 'Nairobi', 'East or West...', '', '', 3),
-(3, '', '', '', '', '', NULL),
+(1, 'Home', 'Nairobi', 'East or West...', 'home.jpg', '', 3),
 (4, 'Maasai Lodge', 'Narok', 'One with nature', 'MARPIC.jpg', '', 2),
-(5, 'Uhuru Gardens', 'Nairobi', '', 'dp1.jpg', '', 2);
+(5, 'Uhuru Gardens', 'Nairobi', 'Feel the freedom', 'dp1.jpg', 'YES', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `locimages`
+--
+
+CREATE TABLE `locimages` (
+  `image_id` int(11) NOT NULL,
+  `image_name` text DEFAULT NULL,
+  `location_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -177,9 +175,9 @@ CREATE TABLE `model` (
 --
 
 INSERT INTO `model` (`model_id`, `first_name`, `last_name`, `username`, `email`, `password`, `verified`) VALUES
-(0, '', '', '', '', '', ''),
+(0, 'For', 'testing', 'None', '', '', ''),
 (1, 'Karma', 'Vishnu', 'k_vishnu4', 'vishnu4@gmail.com', '', ''),
-(3, 'Jane', 'Makabala', 'j_makabala', 'jmakabala@gmail.com', 'ab47ea0a7ec86aafc28df89f35a2df20', ''),
+(3, 'Jane', 'Makabala', 'j_makabala', 'jmakabala@gmail.com', 'ab47ea0a7ec86aafc28df89f35a2df20', 'YES'),
 (4, 'Michelle', 'Kalundu', 'm_kalundu', 'mkalundu@gmail.com', 'f8294eaaabcf580e1c473c0ad0a786d2', ''),
 (5, 'Yolanda', 'Sobhuza', 'y_sobhuza', 'y_sobhuza@gmail.com', 'bb72bfc406effe7131fa1fb38ea36001', '');
 
@@ -233,9 +231,9 @@ CREATE TABLE `photographers` (
 
 INSERT INTO `photographers` (`photographer_id`, `first_name`, `last_name`, `username`, `email`, `expertise`, `bio`, `password`, `verified`) VALUES
 (1, 'John', 'Mark', 'omiesh105', 'omiesh@gmail.com', 'Urban fashion', '', '', 'YES'),
-(2, 'Matthew', 'Orieng', 'riengski_', 'morieng@gmail.com', 'Scenery', '', 'c1ff0c2134ce2661edb0ebfc0722ab5f', ''),
-(4, 'Antony', 'Michaels', 'a_michaels', 'amichaels@gmail.com', 'Urban fashion', '', 'a657a64b2ef13ed9fcc1657aa74769fc', ''),
-(5, 'Gas', 'Cooker', 'g_cooker', 'gcooker@gmail.com', 'Scenery', 'Mimi ndimi mimi', 'f972f2c3c48bbec0210f9f4fa14ed23e', '');
+(2, 'Matthew', 'Orieng', 'riengski_', 'morieng@gmail.com', 'Scenery', '<pre>Niko sawa</pre>', 'c1ff0c2134ce2661edb0ebfc0722ab5f', 'YES'),
+(4, 'Antony', 'Michaels', 'a_michaels', 'amichaels@gmail.com', 'Urban fashion', '', 'a657a64b2ef13ed9fcc1657aa74769fc', 'YES'),
+(5, 'Gas', 'Cooker', 'g_cooker', 'gcooker@gmail.com', 'Scenery', '<pre>Youthful, with an eye for excellence 😎</pre>', 'f972f2c3c48bbec0210f9f4fa14ed23e', '');
 
 -- --------------------------------------------------------
 
@@ -284,12 +282,6 @@ ALTER TABLE `clients`
   ADD PRIMARY KEY (`client_id`);
 
 --
--- Indexes for table `events`
---
-ALTER TABLE `events`
-  ADD PRIMARY KEY (`event_id`);
-
---
 -- Indexes for table `images`
 --
 ALTER TABLE `images`
@@ -304,6 +296,13 @@ ALTER TABLE `images`
 ALTER TABLE `location`
   ADD PRIMARY KEY (`location_id`),
   ADD KEY `owner_id` (`owner_id`);
+
+--
+-- Indexes for table `locimages`
+--
+ALTER TABLE `locimages`
+  ADD PRIMARY KEY (`image_id`),
+  ADD KEY `location_id` (`location_id`);
 
 --
 -- Indexes for table `model`
@@ -337,31 +336,31 @@ ALTER TABLE `profileimages`
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `booking_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `booking_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `clients`
 --
 ALTER TABLE `clients`
-  MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `events`
---
-ALTER TABLE `events`
-  MODIFY `event_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `images`
 --
 ALTER TABLE `images`
-  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `location`
 --
 ALTER TABLE `location`
   MODIFY `location_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `locimages`
+--
+ALTER TABLE `locimages`
+  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `model`
@@ -412,6 +411,12 @@ ALTER TABLE `images`
 --
 ALTER TABLE `location`
   ADD CONSTRAINT `location_ibfk_1` FOREIGN KEY (`owner_id`) REFERENCES `owner` (`owner_id`);
+
+--
+-- Constraints for table `locimages`
+--
+ALTER TABLE `locimages`
+  ADD CONSTRAINT `locimages_ibfk_1` FOREIGN KEY (`location_id`) REFERENCES `location` (`location_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
